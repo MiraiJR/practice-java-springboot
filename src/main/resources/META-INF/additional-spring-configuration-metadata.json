@@ -1,9 +1,14 @@
 {
   "properties": [
     {
-      "name": "token.signing.key",
+      "name": "token.access.signing.key",
       "type": "java.lang.String",
-      "description": "A description for 'token.signing.key'"
+      "description": "A description for 'token.access.signing.key'"
+    },
+    {
+      "name": "token.refresh.signing.key",
+      "type": "java.lang.String",
+      "description": "A description for 'token.refresh.signing.key'"
     }
   ]
 }

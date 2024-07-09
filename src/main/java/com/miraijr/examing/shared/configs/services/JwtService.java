@@ -8,8 +8,9 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import com.miraijr.examing.shared.types.enums.TokenType;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -18,55 +19,59 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
-  @Value("${token.signing.key}")
-  private String JWT_SIGNING_KEY;
+  @Value("${token.access.signing.key}")
+  private String JWT_ACCESS_SIGNING_KEY;
 
-  public String extractUserName(String token) {
-    return extractClaim(token, Claims::getSubject);
+  @Value("${token.refresh.signing.key}")
+  private String JWT_REFRESH_SIGNING_KEY;
+
+  public Long extractUserId(String token, TokenType type) {
+    return Long.valueOf(extractClaim(token, Claims::getSubject, type));
   }
 
-  public String generateToken(UserDetails userDetails) {
-    return generateToken(new HashMap<>(), userDetails);
+  public String generateToken(Long userId, TokenType type) {
+    return generateToken(new HashMap<>(), userId, type);
   }
 
-  public boolean isTokenValid(String token, UserDetails userDetails) {
-    final String userName = extractUserName(token);
-    return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
+  public boolean isTokenValid(String token, Long id, TokenType type) {
+    final Long userId = extractUserId(token, type);
+    return (userId.equals(id)) && !isTokenExpired(token, type);
   }
 
-  private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+  private String generateToken(Map<String, Object> extraClaims, Long id, TokenType type) {
     return Jwts.builder()
         .claims(extraClaims)
-        .subject(userDetails.getUsername())
+        .subject(id.toString())
         .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-        .signWith(getSigningKey())
+        .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * (type == TokenType.REFRESH ? 7 : 1)))
+        .signWith(getSigningKey(type))
         .compact();
   }
 
-  private boolean isTokenExpired(String token) {
-    return extractExpiration(token).before(new Date());
+  private boolean isTokenExpired(String token, TokenType type) {
+    return extractExpiration(token, type).before(new Date());
   }
 
-  private Date extractExpiration(String token) {
-    return extractClaim(token, Claims::getExpiration);
+  private Date extractExpiration(String token, TokenType type) {
+    return extractClaim(token, Claims::getExpiration, type);
   }
 
-  private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
-    final Claims claims = extractAllClaims(token);
+  private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers, TokenType type) {
+    final Claims claims = extractAllClaims(token, type);
     return claimsResolvers.apply(claims);
   }
 
-  private Claims extractAllClaims(String token) {
+  private Claims extractAllClaims(String token, TokenType type) {
     return Jwts.parser()
-        .verifyWith(getSigningKey())
+        .verifyWith(getSigningKey(type))
         .build()
         .parseSignedClaims(token)
         .getPayload();
   }
 
-  private SecretKey getSigningKey() {
-    byte[] keyBytes = Decoders.BASE64.decode(JWT_SIGNING_KEY);
+  private SecretKey getSigningKey(TokenType type) {
+    byte[] keyBytes = Decoders.BASE64
+        .decode(type == TokenType.ACCESS ? JWT_ACCESS_SIGNING_KEY : JWT_REFRESH_SIGNING_KEY);
     return Keys.hmacShaKeyFor(keyBytes);
   }
 }

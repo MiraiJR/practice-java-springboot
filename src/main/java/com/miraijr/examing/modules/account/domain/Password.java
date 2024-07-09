@@ -38,6 +38,6 @@ public class Password {
   }
 
   public boolean verify(String password) {
-    return BCrypt.checkpw(this.value, password);
+    return BCrypt.checkpw(password, this.value);
   }
 }

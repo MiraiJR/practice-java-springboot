@@ -5,8 +5,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.miraijr.examing.modules.account.application.exceptions.UsernameExistedException;
-import com.miraijr.examing.modules.account.application.port.in.RegisterAccountInputModel;
 import com.miraijr.examing.modules.account.application.port.in.RegisterAccountUseCase;
+import com.miraijr.examing.modules.account.application.port.in.input.RegisterAccountInputModel;
 import com.miraijr.examing.modules.account.application.port.out.CreateAccountPort;
 import com.miraijr.examing.modules.account.application.port.out.LoadAccountPort;
 import com.miraijr.examing.modules.account.domain.Account;

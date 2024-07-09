@@ -8,15 +8,27 @@ import lombok.Getter;
 @Getter
 @Builder
 public class Account {
-  private final Long id;
-  private final LocalDateTime createdAt;
-  private final String username;
-  private final Password password;
-  private final String accessToken;
-  private final String refreshToken;
-  private final LocalDateTime latestLogin;
+  private Long id;
+  private LocalDateTime createdAt;
+  private String username;
+  private Password password;
+  private String accessToken;
+  private String refreshToken;
+  private LocalDateTime latestLogin;
 
   public void hashPassword() {
     this.password.hash();
+  }
+
+  public boolean verifyPassword(String rawPassword) {
+    return this.password.verify(rawPassword);
+  }
+
+  public void updateAccessToken(String token) {
+    this.accessToken = token;
+  }
+
+  public void updateRefreshToken(String token) {
+    this.refreshToken = token;
   }
 }

@@ -14,8 +14,6 @@ import com.miraijr.examing.core.application.ApplicationException;
 import com.miraijr.examing.core.domain.DomainException;
 import com.miraijr.examing.shared.exceptions.ExceptionResponseModel;
 
-import jakarta.validation.ConstraintViolationException;
-
 @RestControllerAdvice
 public class GlobalExceptionFilter {
   @ExceptionHandler({ ApplicationException.class })
