@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 public class Password {
   private final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[A-Z]).{8,}$";
+  private final Integer MIN_LENGTH = 8;
   private String value;
 
   public Password(String value) {
@@ -25,7 +26,7 @@ public class Password {
       return;
     }
 
-    if (!value.matches(this.PASSWORD_PATTERN)) {
+    if (value.length() < MIN_LENGTH || !value.matches(this.PASSWORD_PATTERN)) {
       throw new InvalidPassword();
     }
 
