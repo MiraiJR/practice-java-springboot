@@ -15,4 +15,7 @@ public class RegisterAccountInputModel {
   @NotNull
   @Length(min = 8, max = 50)
   private final String password;
+  @NotNull
+  @Length(min = 2)
+  private final String fullName;
 }
