@@ -2,10 +2,8 @@ package com.miraijr.examing.modules.user.adapter.out.persistence;
 
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-import com.miraijr.examing.core.application.ApplicationException;
 import com.miraijr.examing.modules.user.application.port.out.CreateUserPort;
 import com.miraijr.examing.modules.user.application.port.out.LoadUserPort;
 import com.miraijr.examing.modules.user.common.mapping.UserMapping;
