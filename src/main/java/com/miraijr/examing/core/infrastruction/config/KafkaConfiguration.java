@@ -11,7 +11,9 @@ import org.springframework.util.backoff.FixedBackOff;
 
 @Configuration
 public class KafkaConfiguration {
-  private final static String CREATE_USER_FROM_ACCOUNT = "create-user-from-account";
+  public final static String GROUP_ID = "exam-outline-pj";
+  private final static String REVERSE_ACCOUNT_TOPIC = "reverse-account";
+  private final static String CREATE_USER_TOPIC = "create-user";
 
   @Bean
   CommonErrorHandler errorHandler(KafkaOperations<Object, Object> template) {
@@ -19,7 +21,12 @@ public class KafkaConfiguration {
   }
 
   @Bean
-  NewTopic createUserFromAccountTopic() {
-    return new NewTopic(CREATE_USER_FROM_ACCOUNT, 1, (short) 1);
+  NewTopic createUserTopic() {
+    return new NewTopic(CREATE_USER_TOPIC, 1, (short) 1);
+  }
+
+  @Bean
+  NewTopic reverseAccountTopic() {
+    return new NewTopic(REVERSE_ACCOUNT_TOPIC, 1, (short) 1);
   }
 }

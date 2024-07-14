@@ -3,6 +3,7 @@ package com.miraijr.examing.modules.account.application;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.miraijr.examing.modules.account.application.exceptions.FailToRegisterAccountException;
 import com.miraijr.examing.modules.account.application.exceptions.UsernameExistedException;
@@ -10,10 +11,12 @@ import com.miraijr.examing.modules.account.application.port.in.RegisterAccountUs
 import com.miraijr.examing.modules.account.application.port.in.input.RegisterAccountInputModel;
 import com.miraijr.examing.modules.account.application.port.out.CreateAccountPort;
 import com.miraijr.examing.modules.account.application.port.out.LoadAccountPort;
-import com.miraijr.examing.modules.account.application.port.out.SendMessageToKafkaPort;
+import com.miraijr.examing.modules.account.application.port.out.AccountEventToKafkaPort;
 import com.miraijr.examing.modules.account.application.port.out.input.CreateUserInputModel;
+import com.miraijr.examing.modules.account.common.types.enums.AccountStatus;
 import com.miraijr.examing.modules.account.domain.Account;
 import com.miraijr.examing.modules.account.domain.Password;
+import com.miraijr.examing.modules.account.domain.Status;
 
 import lombok.AllArgsConstructor;
 
@@ -22,13 +25,15 @@ import lombok.AllArgsConstructor;
 public class RegisterAccount implements RegisterAccountUseCase {
   private final LoadAccountPort loadAccountPort;
   private final CreateAccountPort createAccountPort;
-  private final SendMessageToKafkaPort sendMessageToKafkaPort;
+  private final AccountEventToKafkaPort sendMessageToKafkaPort;
 
   @Override
+  @Transactional("transactionManager")
   public String execute(RegisterAccountInputModel registerAccountInputModel) {
     Account account = Account.builder()
         .username(registerAccountInputModel.getUsername())
         .password(new Password(registerAccountInputModel.getPassword()))
+        .status(new Status(AccountStatus.PENDING.toString()))
         .build();
     account.hashPassword();
 
@@ -39,13 +44,14 @@ public class RegisterAccount implements RegisterAccountUseCase {
       throw new UsernameExistedException();
     }
 
-    this.createAccountPort.createAccount(account);
+    Long newAccountId = this.createAccountPort.createAccount(account);
 
     matchedAccount = this.loadAccountPort
-        .loadAccountByUsername(registerAccountInputModel.getUsername());
-    if (matchedAccount.isEmpty()) {
+        .loadAccountById(newAccountId);
+    if (matchedAccount.isEmpty() || matchedAccount.get().getStatus().isFailed()) {
       throw new FailToRegisterAccountException();
     }
+
     this.sendMessageToKafkaPort.sendCreateUserFromAccountTopic(
         new CreateUserInputModel(matchedAccount.get().getId(), registerAccountInputModel.getFullName()));
 

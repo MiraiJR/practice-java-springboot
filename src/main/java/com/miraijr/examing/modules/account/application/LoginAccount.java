@@ -3,6 +3,7 @@ package com.miraijr.examing.modules.account.application;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.miraijr.examing.modules.account.application.exceptions.WrongInforLoginException;
 import com.miraijr.examing.modules.account.application.port.in.LoginAccountUseCase;
@@ -23,6 +24,7 @@ public class LoginAccount implements LoginAccountUseCase {
   private final UpdateAccountPort updateAccountPort;
 
   @Override
+  @Transactional("transactionManager")
   public LoginAccountOutputModel execute(LoginAccountInputModel loginAccountInputModel) {
     Optional<Account> matchedAccount = this.loadAccountPort.loadAccountByUsername(loginAccountInputModel.getUsername());
 

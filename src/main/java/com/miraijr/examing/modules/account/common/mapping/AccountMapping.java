@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.miraijr.examing.modules.account.adapter.out.persistence.AccountEntityJpa;
 import com.miraijr.examing.modules.account.domain.Account;
 import com.miraijr.examing.modules.account.domain.Password;
+import com.miraijr.examing.modules.account.domain.Status;
 import com.miraijr.examing.shared.interfaces.IMappingDomainEntityAndJpaEntity;
 
 @Component
@@ -17,6 +18,7 @@ public class AccountMapping implements IMappingDomainEntityAndJpaEntity<Account,
         .createdAt(domainEntity.getCreatedAt())
         .username(domainEntity.getUsername())
         .password(domainEntity.getPassword().getValue())
+        .status(domainEntity.getStatus().getValue())
         .accessToken(domainEntity.getAccessToken())
         .refreshToken(domainEntity.getRefreshToken())
         .latestLogin(domainEntity.getLatestLogin())
@@ -33,6 +35,7 @@ public class AccountMapping implements IMappingDomainEntityAndJpaEntity<Account,
         .accessToken(jpaEntity.getAccessToken())
         .refreshToken(jpaEntity.getRefreshToken())
         .latestLogin(jpaEntity.getLatestLogin())
+        .status(new Status(jpaEntity.getStatus()))
         .build();
   }
 }
