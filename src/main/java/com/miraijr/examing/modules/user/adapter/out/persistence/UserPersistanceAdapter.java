@@ -27,9 +27,9 @@ public class UserPersistanceAdapter implements CreateUserPort, LoadUserPort {
   }
 
   @Override
-  public void createUser(User user) {
-    // UserEntityJpa userEntity = this.userMapping.convertFromDomainEntityToJpaEntity(user);
-    throw new ApplicationException("ERROR-0001", "loi", HttpStatus.BAD_REQUEST);
-    // this.userRepository.save(userEntity);
+  public Long createUser(User user) {
+    UserEntityJpa userEntity = this.userMapping.convertFromDomainEntityToJpaEntity(user);
+    UserEntityJpa savedUser = this.userRepository.save(userEntity);
+    return savedUser.getId();
   }
 }

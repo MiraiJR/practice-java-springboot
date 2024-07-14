@@ -7,10 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.miraijr.examing.modules.account.application.exceptions.AccountNotFoundException;
 import com.miraijr.examing.modules.account.application.port.in.ReverseAccountUseCase;
-import com.miraijr.examing.modules.account.application.port.in.input.ReverseAccountEvent;
+import com.miraijr.examing.modules.account.application.port.in.event.ReverseAccountEvent;
+import com.miraijr.examing.modules.account.application.port.out.DeleteAccountPort;
 import com.miraijr.examing.modules.account.application.port.out.LoadAccountPort;
-import com.miraijr.examing.modules.account.application.port.out.UpdateAccountPort;
-import com.miraijr.examing.modules.account.common.types.enums.AccountStatus;
 import com.miraijr.examing.modules.account.domain.Account;
 
 import lombok.AllArgsConstructor;
@@ -18,8 +17,8 @@ import lombok.AllArgsConstructor;
 @Component
 @AllArgsConstructor
 public class ReverseAccount implements ReverseAccountUseCase {
-  private final UpdateAccountPort updateAccountPort;
   private final LoadAccountPort loadAccountPort;
+  private final DeleteAccountPort deleteAccountPort;
 
   @Override
   @Transactional("transactionManager")
@@ -28,8 +27,6 @@ public class ReverseAccount implements ReverseAccountUseCase {
     if (matchedAccount.isEmpty()) {
       throw new AccountNotFoundException();
     }
-
-    matchedAccount.get().updateStatus(AccountStatus.FAILED.toString());
-    this.updateAccountPort.updateAccount(matchedAccount.get());
+    this.deleteAccountPort.deleteAccount(matchedAccount.get().getId());
   }
 }

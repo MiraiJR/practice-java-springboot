@@ -11,6 +11,7 @@ import com.miraijr.examing.modules.user.application.port.in.input.CreateUserInpu
 import com.miraijr.examing.modules.user.application.port.out.CreateUserPort;
 import com.miraijr.examing.modules.user.application.port.out.LoadUserPort;
 import com.miraijr.examing.modules.user.application.port.out.UserEventToKafkaPort;
+import com.miraijr.examing.modules.user.application.port.out.model.CompleteCreateUserEvent;
 import com.miraijr.examing.modules.user.application.port.out.model.ReverseAccountEvent;
 import com.miraijr.examing.modules.user.common.types.enums.EventStatus;
 import com.miraijr.examing.modules.user.domain.User;
@@ -35,7 +36,8 @@ public class CreateUser implements CreateUserUseCase {
       }
 
       User user = new User(createUserInputModel.getId(), createUserInputModel.getFullName());
-      this.createUserPort.createUser(user);
+      Long userId = this.createUserPort.createUser(user);
+      this.sendMessageToKafkaPort.completeCreateUser(new CompleteCreateUserEvent(userId, EventStatus.COMPLETED));
     } catch (Exception e) {
       this.sendMessageToKafkaPort
           .reverseAccount(new ReverseAccountEvent(createUserInputModel.getId(), EventStatus.REVERSE_ACCOUNT));

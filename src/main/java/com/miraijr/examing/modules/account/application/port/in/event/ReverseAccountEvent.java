@@ -1,4 +1,4 @@
-package com.miraijr.examing.modules.account.application.port.in.input;
+package com.miraijr.examing.modules.account.application.port.in.event;
 
 import com.miraijr.examing.modules.user.common.types.enums.EventStatus;
 
