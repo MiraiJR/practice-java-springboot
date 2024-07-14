@@ -36,6 +36,8 @@ public class AccountEntityJpa {
   private String refreshToken;
   @Column(name = "latest_login")
   private LocalDateTime latestLogin;
+  @Column(nullable = false)
+  private String status;
 
   @PrePersist
   void preInsert() {

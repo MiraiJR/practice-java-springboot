@@ -15,6 +15,7 @@ public class Account {
   private String accessToken;
   private String refreshToken;
   private LocalDateTime latestLogin;
+  private Status status;
 
   public void hashPassword() {
     this.password.hash();
@@ -30,5 +31,9 @@ public class Account {
 
   public void updateRefreshToken(String token) {
     this.refreshToken = token;
+  }
+
+  public void updateStatus(String status) {
+    this.status = new Status(status);
   }
 }

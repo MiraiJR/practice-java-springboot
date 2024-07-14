@@ -8,6 +8,7 @@ import com.miraijr.examing.modules.account.application.port.out.CreateAccountPor
 import com.miraijr.examing.modules.account.application.port.out.LoadAccountPort;
 import com.miraijr.examing.modules.account.application.port.out.UpdateAccountPort;
 import com.miraijr.examing.modules.account.common.mapping.AccountMapping;
+import com.miraijr.examing.modules.account.common.types.enums.AccountStatus;
 import com.miraijr.examing.modules.account.domain.Account;
 
 import lombok.AllArgsConstructor;
@@ -20,20 +21,29 @@ public class AccountPersistenceAdapter implements LoadAccountPort, CreateAccount
 
   @Override
   public Optional<Account> loadAccountByUsername(String username) {
-    Optional<AccountEntityJpa> account = this.accountRepository.findByUsername(username);
+    Optional<AccountEntityJpa> account = this.accountRepository.findByUsernameAndStatus(username,
+        AccountStatus.ACTIVE.toString());
     return account.isPresent() ? Optional.of(this.accountMapping.convertFromJpaEntityToDomainEntity(account.get()))
         : Optional.empty();
   }
 
   @Override
-  public void createAccount(Account account) {
+  public Long createAccount(Account account) {
     AccountEntityJpa accountEntity = this.accountMapping.convertFromDomainEntityToJpaEntity(account);
-    this.accountRepository.save(accountEntity);
+    AccountEntityJpa savedEntity = this.accountRepository.save(accountEntity);
+    return savedEntity.getId();
   }
 
   @Override
   public void updateAccount(Account account) {
     AccountEntityJpa accountEntity = this.accountMapping.convertFromDomainEntityToJpaEntity(account);
     this.accountRepository.save(accountEntity);
+  }
+
+  @Override
+  public Optional<Account> loadAccountById(Long accountId) {
+    Optional<AccountEntityJpa> account = this.accountRepository.findById(accountId);
+    return account.isPresent() ? Optional.of(this.accountMapping.convertFromJpaEntityToDomainEntity(account.get()))
+        : Optional.empty();
   }
 }
