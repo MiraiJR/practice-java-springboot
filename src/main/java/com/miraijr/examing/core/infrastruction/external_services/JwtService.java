@@ -1,4 +1,4 @@
-package com.miraijr.examing.shared.configs.services;
+package com.miraijr.examing.core.infrastruction.external_services;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -10,6 +10,7 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.miraijr.examing.core.infrastruction.external_services.out.TokenHandlerPort;
 import com.miraijr.examing.shared.types.enums.TokenType;
 
 import io.jsonwebtoken.Claims;
@@ -18,7 +19,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Service
-public class JwtService {
+public class JwtService implements TokenHandlerPort {
   @Value("${token.access.signing.key}")
   private String JWT_ACCESS_SIGNING_KEY;
 
@@ -33,11 +34,6 @@ public class JwtService {
     return generateToken(new HashMap<>(), userId, type);
   }
 
-  public boolean isTokenValid(String token, Long id, TokenType type) {
-    final Long userId = extractUserId(token, type);
-    return (userId.equals(id)) && !isTokenExpired(token, type);
-  }
-
   private String generateToken(Map<String, Object> extraClaims, Long id, TokenType type) {
     return Jwts.builder()
         .claims(extraClaims)
@@ -48,7 +44,7 @@ public class JwtService {
         .compact();
   }
 
-  private boolean isTokenExpired(String token, TokenType type) {
+  public boolean isTokenExpired(String token, TokenType type) {
     return extractExpiration(token, type).before(new Date());
   }
 

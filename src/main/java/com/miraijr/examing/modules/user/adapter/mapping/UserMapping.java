@@ -1,10 +1,10 @@
-package com.miraijr.examing.modules.user.common.mapping;
+package com.miraijr.examing.modules.user.adapter.mapping;
 
 import org.springframework.stereotype.Component;
 
+import com.miraijr.examing.core.adapter.mapping.IMappingDomainEntityAndJpaEntity;
 import com.miraijr.examing.modules.user.adapter.out.persistence.UserEntityJpa;
 import com.miraijr.examing.modules.user.domain.User;
-import com.miraijr.examing.shared.interfaces.IMappingDomainEntityAndJpaEntity;
 
 @Component
 public class UserMapping implements IMappingDomainEntityAndJpaEntity<User, UserEntityJpa> {
