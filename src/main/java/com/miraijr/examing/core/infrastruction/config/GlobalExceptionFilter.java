@@ -1,4 +1,4 @@
-package com.miraijr.examing.shared.configs;
+package com.miraijr.examing.core.infrastruction.config;
 
 import java.util.Date;
 

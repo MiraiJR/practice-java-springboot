@@ -1,7 +1,6 @@
 package com.miraijr.examing.modules.account.domain;
 
 import java.time.LocalDateTime;
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -21,6 +20,14 @@ public class Account {
     this.password.hash();
   }
 
+  public boolean verifyAccessToken(String token) {
+    if (this.accessToken == null || this.accessToken.isEmpty()) {
+      return false;
+    }
+
+    return this.accessToken.equals(token);
+  }
+
   public boolean verifyPassword(String rawPassword) {
     return this.password.verify(rawPassword);
   }
@@ -35,5 +42,9 @@ public class Account {
 
   public void updateStatus(String status) {
     this.status = new Status(status);
+  }
+
+  public void updateLatestLogin() {
+    this.latestLogin = LocalDateTime.now();
   }
 }

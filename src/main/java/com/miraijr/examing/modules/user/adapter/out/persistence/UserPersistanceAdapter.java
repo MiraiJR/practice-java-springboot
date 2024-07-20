@@ -4,9 +4,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.miraijr.examing.modules.user.adapter.mapping.UserMapping;
 import com.miraijr.examing.modules.user.application.port.out.CreateUserPort;
 import com.miraijr.examing.modules.user.application.port.out.LoadUserPort;
-import com.miraijr.examing.modules.user.common.mapping.UserMapping;
 import com.miraijr.examing.modules.user.domain.User;
 
 import lombok.AllArgsConstructor;

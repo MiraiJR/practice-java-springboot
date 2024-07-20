@@ -2,8 +2,8 @@ package com.miraijr.examing.modules.account.adapter.out;
 
 import org.springframework.stereotype.Component;
 
+import com.miraijr.examing.core.infrastruction.external_services.JwtService;
 import com.miraijr.examing.modules.account.application.port.out.SignTokenPort;
-import com.miraijr.examing.shared.configs.services.JwtService;
 import com.miraijr.examing.shared.types.enums.TokenType;
 
 import lombok.AllArgsConstructor;

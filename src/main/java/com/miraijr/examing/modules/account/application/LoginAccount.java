@@ -37,6 +37,7 @@ public class LoginAccount implements LoginAccountUseCase {
     String refreshToken = this.signTokenPort.signRefreshToken(matchedAccount.get().getId());
     matchedAccount.get().updateAccessToken(accessToken);
     matchedAccount.get().updateRefreshToken(refreshToken);
+    matchedAccount.get().updateLatestLogin();
     this.updateAccountPort.updateAccount(matchedAccount.get());
 
     return new LoginAccountOutputModel(accessToken, refreshToken);
