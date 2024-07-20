@@ -18,7 +18,6 @@ import com.miraijr.examing.modules.account.domain.Account;
 import com.miraijr.examing.shared.types.CustomAuthentication;
 import com.miraijr.examing.shared.types.enums.TokenType;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -10,6 +10,7 @@ import com.miraijr.examing.shared.annotations.UserIdArgumentResolver;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
+  @SuppressWarnings("null")
   @Override
   public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
     argumentResolvers.add(new UserIdArgumentResolver());
