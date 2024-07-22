@@ -19,8 +19,6 @@ public class AccountMapping implements IMappingDomainEntityAndJpaEntity<Account,
         .username(domainEntity.getUsername())
         .password(domainEntity.getPassword().getValue())
         .status(domainEntity.getStatus().getValue())
-        .accessToken(domainEntity.getAccessToken())
-        .refreshToken(domainEntity.getRefreshToken())
         .latestLogin(domainEntity.getLatestLogin())
         .build();
   }
@@ -32,8 +30,6 @@ public class AccountMapping implements IMappingDomainEntityAndJpaEntity<Account,
         .createdAt(jpaEntity.getCreatedAt())
         .username(jpaEntity.getUsername())
         .password(new Password(jpaEntity.getPassword(), true))
-        .accessToken(jpaEntity.getAccessToken())
-        .refreshToken(jpaEntity.getRefreshToken())
         .latestLogin(jpaEntity.getLatestLogin())
         .status(new Status(jpaEntity.getStatus()))
         .build();

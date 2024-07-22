@@ -3,6 +3,7 @@ package com.miraijr.examing.modules.account.application;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.miraijr.examing.modules.account.application.exceptions.AccountNotFoundException;
 import com.miraijr.examing.modules.account.application.port.in.UpdateAccountUseCase;
@@ -20,6 +21,7 @@ public class UpdateAccount implements UpdateAccountUseCase {
   private UpdateAccountPort updateAccountPort;
 
   @Override
+  @Transactional("transactionManager")
   public void changeStatusAccount(ChangeAccountStatusInputModel changeAccountStatusInputModel) {
     Optional<Account> matchedAccount = this.loadAccountPort
         .loadAccountById(changeAccountStatusInputModel.getAccountId());
