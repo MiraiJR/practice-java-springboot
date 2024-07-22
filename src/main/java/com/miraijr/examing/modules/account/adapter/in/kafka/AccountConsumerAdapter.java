@@ -1,4 +1,4 @@
-package com.miraijr.examing.modules.account.adapter.in;
+package com.miraijr.examing.modules.account.adapter.in.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaHandler;

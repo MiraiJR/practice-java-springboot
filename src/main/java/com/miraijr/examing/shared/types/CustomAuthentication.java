@@ -7,10 +7,12 @@ import org.springframework.security.core.GrantedAuthority;
 
 public class CustomAuthentication implements Authentication {
   private final Long userId;
+  private final Long tokenId;
   private boolean authenticated = false;
 
-  public CustomAuthentication(Long userId) {
+  public CustomAuthentication(Long userId, Long tokenId) {
     this.userId = userId;
+    this.tokenId = tokenId;
     this.authenticated = true;
   }
 
@@ -42,6 +44,10 @@ public class CustomAuthentication implements Authentication {
   @Override
   public boolean isAuthenticated() {
     return authenticated;
+  }
+
+  public Long getTokenId() {
+    return this.tokenId;
   }
 
   @Override
