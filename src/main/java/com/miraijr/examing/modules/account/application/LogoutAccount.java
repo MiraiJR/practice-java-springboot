@@ -6,10 +6,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import com.miraijr.examing.modules.account.application.exceptions.AccountNotFoundException;
 import com.miraijr.examing.modules.account.application.port.in.LogoutAccountUseCase;
-import com.miraijr.examing.modules.account.application.port.out.AccountEventToKafkaPort;
+import com.miraijr.examing.modules.account.application.port.out.DeleteAccountTokenPort;
 import com.miraijr.examing.modules.account.application.port.out.LoadAccountPort;
 import com.miraijr.examing.modules.account.application.port.out.UpdateAccountPort;
-import com.miraijr.examing.modules.account.application.port.out.input.RemoveAccountTokenInputModel;
 import com.miraijr.examing.modules.account.domain.Account;
 import com.miraijr.examing.shared.types.CustomAuthentication;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,7 @@ import lombok.AllArgsConstructor;
 public class LogoutAccount implements LogoutAccountUseCase {
   private final LoadAccountPort loadAccountPort;
   private final UpdateAccountPort updateAccountPort;
-  private final AccountEventToKafkaPort sendMessageToKafkaPort;
+  private final DeleteAccountTokenPort deleteAccountTokenPort;
 
   @Override
   @Transactional("transactionManager")
@@ -32,7 +31,7 @@ public class LogoutAccount implements LogoutAccountUseCase {
 
     Long tokenId = this.getTokenId();
     this.updateAccountPort.updateAccount(matchedAccount.get());
-    this.sendMessageToKafkaPort.sendRemoveTokenTopic(new RemoveAccountTokenInputModel(tokenId));
+    this.deleteAccountTokenById(tokenId);
 
     return "Logout successfully!";
   }
@@ -42,5 +41,9 @@ public class LogoutAccount implements LogoutAccountUseCase {
 
     Long tokenId = (Long) authentication.getTokenId();
     return tokenId;
+  }
+
+  private void deleteAccountTokenById(Long tokenId) {
+    this.deleteAccountTokenPort.deleteById(tokenId);
   }
 }

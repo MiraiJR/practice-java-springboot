@@ -1,4 +1,4 @@
-package com.miraijr.examing.modules.accountToken.application.port.out;
+package com.miraijr.examing.modules.account.application.port.out;
 
 public interface DeleteAccountTokenPort {
   public void deleteByAccessToken(String token);

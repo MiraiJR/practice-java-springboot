@@ -1,4 +1,4 @@
-package com.miraijr.examing.modules.accountToken.domain.exceptions;
+package com.miraijr.examing.modules.account.domain.exceptions;
 
 import com.miraijr.examing.core.domain.DomainException;
 

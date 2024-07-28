@@ -1,6 +1,5 @@
-package com.miraijr.examing.modules.accountToken.adapter.out.persistence;
+package com.miraijr.examing.modules.account.adapter.out.persistence;
 
-import com.miraijr.examing.modules.account.adapter.out.persistence.AccountEntityJpa;
 import com.miraijr.examing.shared.types.enums.DeviceType;
 
 import jakarta.persistence.Column;

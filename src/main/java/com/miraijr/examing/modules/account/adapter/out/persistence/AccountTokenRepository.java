@@ -1,4 +1,4 @@
-package com.miraijr.examing.modules.accountToken.adapter.out.persistence;
+package com.miraijr.examing.modules.account.adapter.out.persistence;
 
 import java.util.List;
 import java.util.Optional;
