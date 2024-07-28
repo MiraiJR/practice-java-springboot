@@ -1,8 +1,8 @@
-package com.miraijr.examing.modules.accountToken.domain;
+package com.miraijr.examing.modules.account.domain.exceptions;
 
 import java.util.Arrays;
 import java.util.List;
-import com.miraijr.examing.modules.accountToken.domain.exceptions.InvalidDevice;
+
 import com.miraijr.examing.shared.types.enums.DeviceType;
 import lombok.Getter;
 

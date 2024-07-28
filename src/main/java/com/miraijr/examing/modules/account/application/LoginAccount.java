@@ -9,12 +9,13 @@ import com.miraijr.examing.modules.account.application.exceptions.WrongInforLogi
 import com.miraijr.examing.modules.account.application.port.in.LoginAccountUseCase;
 import com.miraijr.examing.modules.account.application.port.in.input.LoginAccountInputModel;
 import com.miraijr.examing.modules.account.application.port.in.output.LoginAccountOutputModel;
-import com.miraijr.examing.modules.account.application.port.out.AccountEventToKafkaPort;
+import com.miraijr.examing.modules.account.application.port.out.CreateAccountTokenPort;
 import com.miraijr.examing.modules.account.application.port.out.LoadAccountPort;
 import com.miraijr.examing.modules.account.application.port.out.SignTokenPort;
 import com.miraijr.examing.modules.account.application.port.out.UpdateAccountPort;
-import com.miraijr.examing.modules.account.application.port.out.input.CreateAccountTokenInputModel;
 import com.miraijr.examing.modules.account.domain.Account;
+import com.miraijr.examing.modules.account.domain.AccountToken;
+import com.miraijr.examing.modules.account.domain.exceptions.Device;
 import com.miraijr.examing.shared.types.enums.DeviceType;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class LoginAccount implements LoginAccountUseCase {
   private final LoadAccountPort loadAccountPort;
   private final SignTokenPort signTokenPort;
   private final UpdateAccountPort updateAccountPort;
-  private final AccountEventToKafkaPort sendMessageToKafkaPort;
+  private final CreateAccountTokenPort createAccountTokenPort;
 
   @Override
   @Transactional("transactionManager")
@@ -41,12 +42,18 @@ public class LoginAccount implements LoginAccountUseCase {
     String refreshToken = this.signTokenPort.signRefreshToken(matchedAccount.get().getId());
     matchedAccount.get().updateLatestLogin();
     this.updateAccountPort.updateAccount(matchedAccount.get());
-    this.sendMessageToKafkaPort.sendCreateTokenTopic(new CreateAccountTokenInputModel(
-        accessToken,
-        refreshToken,
-        DeviceType.DESKTOP.name(),
-        matchedAccount.get().getId()));
-
+    this.createAccountToken(accessToken, refreshToken, DeviceType.OTHER.name(), matchedAccount.get());
     return new LoginAccountOutputModel(accessToken, refreshToken);
+  }
+
+  private void createAccountToken(String accessToken, String refreshToken, String device, Account account) {
+    AccountToken accountToken = AccountToken.builder()
+        .accessToken(accessToken)
+        .refreshToken(refreshToken)
+        .account(account)
+        .device(new Device(device))
+        .build();
+
+    this.createAccountTokenPort.createAccountToken(accountToken);
   }
 }

@@ -1,14 +1,16 @@
-package com.miraijr.examing.modules.accountToken.adapter.out.persistence;
+package com.miraijr.examing.modules.account.adapter.out.persistence;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
-import com.miraijr.examing.modules.accountToken.adapter.mapping.AccountTokenMapping;
-import com.miraijr.examing.modules.accountToken.application.port.out.CreateAccountTokenPort;
-import com.miraijr.examing.modules.accountToken.application.port.out.DeleteAccountTokenPort;
-import com.miraijr.examing.modules.accountToken.application.port.out.LoadAccountTokenPort;
-import com.miraijr.examing.modules.accountToken.domain.AccountToken;
+
+import com.miraijr.examing.modules.account.adapter.mapping.AccountTokenMapping;
+import com.miraijr.examing.modules.account.application.port.out.CreateAccountTokenPort;
+import com.miraijr.examing.modules.account.application.port.out.DeleteAccountTokenPort;
+import com.miraijr.examing.modules.account.application.port.out.LoadAccountTokenPort;
+import com.miraijr.examing.modules.account.domain.AccountToken;
+
 import lombok.AllArgsConstructor;
 
 @Component
