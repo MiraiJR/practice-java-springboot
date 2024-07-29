@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor
-public class UserConsumerAdapter {
+public class UserKafkaConsumer {
     private final static String CREATE_USER_TOPIC = "create-user";
     private final ObjectMapper objectMapper;
     private final CreateUserUseCase createUserUseCase;

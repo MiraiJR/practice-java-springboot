@@ -1,8 +1,9 @@
-package com.miraijr.examing.modules.account.domain.exceptions;
+package com.miraijr.examing.modules.account.domain;
 
 import java.util.Arrays;
 import java.util.List;
 
+import com.miraijr.examing.modules.account.domain.exceptions.InvalidDevice;
 import com.miraijr.examing.shared.types.enums.DeviceType;
 import lombok.Getter;
 

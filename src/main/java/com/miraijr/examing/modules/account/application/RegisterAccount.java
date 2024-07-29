@@ -11,7 +11,7 @@ import com.miraijr.examing.modules.account.application.port.in.RegisterAccountUs
 import com.miraijr.examing.modules.account.application.port.in.input.RegisterAccountInputModel;
 import com.miraijr.examing.modules.account.application.port.out.CreateAccountPort;
 import com.miraijr.examing.modules.account.application.port.out.LoadAccountPort;
-import com.miraijr.examing.modules.account.application.port.out.AccountEventToKafkaPort;
+import com.miraijr.examing.modules.account.application.port.out.SendEventToMessageQueuePort;
 import com.miraijr.examing.modules.account.application.port.out.input.CreateUserInputModel;
 import com.miraijr.examing.modules.account.common.types.enums.AccountStatus;
 import com.miraijr.examing.modules.account.domain.Account;
@@ -25,7 +25,7 @@ import lombok.AllArgsConstructor;
 public class RegisterAccount implements RegisterAccountUseCase {
   private final LoadAccountPort loadAccountPort;
   private final CreateAccountPort createAccountPort;
-  private final AccountEventToKafkaPort sendMessageToKafkaPort;
+  private final SendEventToMessageQueuePort sendMessageToKafkaPort;
 
   @Override
   @Transactional("transactionManager")

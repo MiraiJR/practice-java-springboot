@@ -10,7 +10,7 @@ import com.miraijr.examing.modules.user.application.port.in.CreateUserUseCase;
 import com.miraijr.examing.modules.user.application.port.in.input.CreateUserInputModel;
 import com.miraijr.examing.modules.user.application.port.out.CreateUserPort;
 import com.miraijr.examing.modules.user.application.port.out.LoadUserPort;
-import com.miraijr.examing.modules.user.application.port.out.UserEventToKafkaPort;
+import com.miraijr.examing.modules.user.application.port.out.SendEventToMessageQueuePort;
 import com.miraijr.examing.modules.user.application.port.out.model.CompleteCreateUserEvent;
 import com.miraijr.examing.modules.user.application.port.out.model.ReverseAccountEvent;
 import com.miraijr.examing.modules.user.common.types.enums.EventStatus;
@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 public class CreateUser implements CreateUserUseCase {
   private final CreateUserPort createUserPort;
   private final LoadUserPort loadUserPort;
-  private final UserEventToKafkaPort sendMessageToKafkaPort;
+  private final SendEventToMessageQueuePort sendMessageToKafkaPort;
 
   @Override
   @Transactional("transactionManager")

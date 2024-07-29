@@ -15,7 +15,7 @@ import com.miraijr.examing.modules.account.application.port.out.SignTokenPort;
 import com.miraijr.examing.modules.account.application.port.out.UpdateAccountPort;
 import com.miraijr.examing.modules.account.domain.Account;
 import com.miraijr.examing.modules.account.domain.AccountToken;
-import com.miraijr.examing.modules.account.domain.exceptions.Device;
+import com.miraijr.examing.modules.account.domain.Device;
 import com.miraijr.examing.shared.types.enums.DeviceType;
 
 import lombok.AllArgsConstructor;

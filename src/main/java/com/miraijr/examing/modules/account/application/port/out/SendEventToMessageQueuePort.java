@@ -4,7 +4,7 @@ import com.miraijr.examing.modules.account.application.port.out.input.CreateAcco
 import com.miraijr.examing.modules.account.application.port.out.input.CreateUserInputModel;
 import com.miraijr.examing.modules.account.application.port.out.input.RemoveAccountTokenInputModel;
 
-public interface AccountEventToKafkaPort {
+public interface SendEventToMessageQueuePort {
     public void sendCreateUserFromAccountTopic(CreateUserInputModel inputModel);
 
     public void sendCreateTokenTopic(CreateAccountTokenInputModel inputModel);

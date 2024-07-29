@@ -67,14 +67,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   }
 
   private AccountToken checkToken(String token) {
-    boolean isExpired = false;
     try {
-      isExpired = this.tokenHandlerPort.isTokenExpired(token, TokenType.ACCESS);
+      this.tokenHandlerPort.isTokenExpired(token, TokenType.ACCESS);
     } catch (Exception e) {
-      throw new ExpiredTokenException();
-    }
-
-    if (isExpired) {
       throw new ExpiredTokenException();
     }
 

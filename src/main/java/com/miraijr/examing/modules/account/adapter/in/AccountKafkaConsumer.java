@@ -1,4 +1,4 @@
-package com.miraijr.examing.modules.account.adapter.in.kafka;
+package com.miraijr.examing.modules.account.adapter.in;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaHandler;
@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor
-public class AccountConsumerAdapter {
+public class AccountKafkaConsumer {
   private final static String REVERSE_ACCOUNT_TOPIC = "reverse-account";
   private final static String COMPLETE_CREATE_USER_TOPIC = "complete-create-user";
   private final ObjectMapper objectMapper;

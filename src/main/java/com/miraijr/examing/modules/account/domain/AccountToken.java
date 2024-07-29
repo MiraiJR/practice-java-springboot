@@ -1,7 +1,5 @@
 package com.miraijr.examing.modules.account.domain;
 
-import com.miraijr.examing.modules.account.domain.exceptions.Device;
-
 import lombok.Builder;
 import lombok.Getter;
 
