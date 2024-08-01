@@ -3,10 +3,10 @@ package com.miraijr.examing.modules.account.adapter.mapping;
 import org.springframework.stereotype.Component;
 
 import com.miraijr.examing.core.adapter.mapping.IMappingDomainEntityAndJpaEntity;
+import com.miraijr.examing.core.domain.acount.Account;
+import com.miraijr.examing.core.domain.acount.Password;
+import com.miraijr.examing.core.domain.acount.Status;
 import com.miraijr.examing.modules.account.adapter.out.persistence.AccountEntityJpa;
-import com.miraijr.examing.modules.account.domain.Account;
-import com.miraijr.examing.modules.account.domain.Password;
-import com.miraijr.examing.modules.account.domain.Status;
 
 @Component
 public class AccountMapping implements IMappingDomainEntityAndJpaEntity<Account, AccountEntityJpa> {

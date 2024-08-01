@@ -3,9 +3,9 @@ package com.miraijr.examing.modules.account.adapter.mapping;
 import org.springframework.stereotype.Component;
 
 import com.miraijr.examing.core.adapter.mapping.IMappingDomainEntityAndJpaEntity;
+import com.miraijr.examing.core.domain.acount.AccountToken;
+import com.miraijr.examing.core.domain.acount.Device;
 import com.miraijr.examing.modules.account.adapter.out.persistence.AccountTokenEntityJpa;
-import com.miraijr.examing.modules.account.domain.AccountToken;
-import com.miraijr.examing.modules.account.domain.Device;
 import com.miraijr.examing.shared.types.enums.DeviceType;
 
 import lombok.AllArgsConstructor;
