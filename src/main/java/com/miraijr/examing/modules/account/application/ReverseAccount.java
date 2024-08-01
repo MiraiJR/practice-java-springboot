@@ -5,12 +5,12 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.miraijr.examing.core.domain.acount.Account;
 import com.miraijr.examing.modules.account.application.exceptions.AccountNotFoundException;
 import com.miraijr.examing.modules.account.application.port.in.ReverseAccountUseCase;
 import com.miraijr.examing.modules.account.application.port.in.event.ReverseAccountEvent;
 import com.miraijr.examing.modules.account.application.port.out.DeleteAccountPort;
 import com.miraijr.examing.modules.account.application.port.out.LoadAccountPort;
-import com.miraijr.examing.modules.account.domain.Account;
 
 import lombok.AllArgsConstructor;
 

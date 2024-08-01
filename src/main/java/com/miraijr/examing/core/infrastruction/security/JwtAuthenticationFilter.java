@@ -8,11 +8,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.miraijr.examing.core.domain.acount.AccountToken;
 import com.miraijr.examing.core.infrastruction.external_services.out.TokenHandlerPort;
 import com.miraijr.examing.core.infrastruction.security.exceptions.ExpiredTokenException;
 import com.miraijr.examing.core.infrastruction.security.exceptions.InvalidTokenException;
 import com.miraijr.examing.modules.account.application.port.out.LoadAccountTokenPort;
-import com.miraijr.examing.modules.account.domain.AccountToken;
 import com.miraijr.examing.shared.types.CustomAuthentication;
 import com.miraijr.examing.shared.types.enums.TokenType;
 import jakarta.servlet.FilterChain;
@@ -29,7 +30,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final TokenHandlerPort tokenHandlerPort;
   private final LoadAccountTokenPort loadAccountTokenPort;
 
-  @SuppressWarnings("null")
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {

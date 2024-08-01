@@ -4,12 +4,13 @@ import java.util.Optional;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.miraijr.examing.core.domain.acount.Account;
 import com.miraijr.examing.modules.account.application.exceptions.AccountNotFoundException;
 import com.miraijr.examing.modules.account.application.port.in.LogoutAccountUseCase;
 import com.miraijr.examing.modules.account.application.port.out.DeleteAccountTokenPort;
 import com.miraijr.examing.modules.account.application.port.out.LoadAccountPort;
 import com.miraijr.examing.modules.account.application.port.out.UpdateAccountPort;
-import com.miraijr.examing.modules.account.domain.Account;
 import com.miraijr.examing.shared.types.CustomAuthentication;
 import lombok.AllArgsConstructor;
 
