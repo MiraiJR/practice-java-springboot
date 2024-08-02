@@ -35,7 +35,10 @@ public class CreateUser implements CreateUserUseCase {
         throw new ExistedUserWithIdException();
       }
 
-      User user = new User(createUserInputModel.getId(), createUserInputModel.getFullName());
+      User user = User.builder()
+          .id(createUserInputModel.getId())
+          .fullName(createUserInputModel.getFullName())
+          .build();
       Long userId = this.createUserPort.createUser(user);
       this.sendMessageToKafkaPort.completeCreateUser(new CompleteCreateUserEvent(userId, EventStatus.COMPLETED));
     } catch (Exception e) {

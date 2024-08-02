@@ -10,5 +10,5 @@ public class AccountToken {
   protected String accessToken;
   protected String refreshToken;
   protected Device device;
-  protected Account account;
+  protected Long accountId;
 }

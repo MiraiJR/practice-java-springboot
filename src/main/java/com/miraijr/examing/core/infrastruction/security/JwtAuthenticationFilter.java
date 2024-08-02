@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     String token = this.getToken(request);
     AccountToken accountToken = this.checkToken(token);
-    CustomAuthentication customAuthentication = new CustomAuthentication(accountToken.getAccount().getId(),
+    CustomAuthentication customAuthentication = new CustomAuthentication(accountToken.getAccountId(),
         accountToken.getId());
     SecurityContextHolder.getContext().setAuthentication(customAuthentication);
     filterChain.doFilter(request, response);

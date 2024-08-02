@@ -50,7 +50,7 @@ public class LoginAccount implements LoginAccountUseCase {
     AccountToken accountToken = AccountToken.builder()
         .accessToken(accessToken)
         .refreshToken(refreshToken)
-        .account(account)
+        .accountId(account.getId())
         .device(new Device(device))
         .build();
 

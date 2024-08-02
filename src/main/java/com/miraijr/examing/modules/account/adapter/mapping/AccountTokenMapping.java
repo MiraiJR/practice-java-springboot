@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.miraijr.examing.core.adapter.mapping.IMappingDomainEntityAndJpaEntity;
 import com.miraijr.examing.core.domain.acount.AccountToken;
 import com.miraijr.examing.core.domain.acount.Device;
+import com.miraijr.examing.modules.account.adapter.out.persistence.AccountEntityJpa;
 import com.miraijr.examing.modules.account.adapter.out.persistence.AccountTokenEntityJpa;
 import com.miraijr.examing.shared.types.enums.DeviceType;
 
@@ -13,8 +14,6 @@ import lombok.AllArgsConstructor;
 @Component
 @AllArgsConstructor
 public class AccountTokenMapping implements IMappingDomainEntityAndJpaEntity<AccountToken, AccountTokenEntityJpa> {
-  private final AccountMapping accountMapping;
-
   @Override
   public AccountTokenEntityJpa convertFromDomainEntityToJpaEntity(AccountToken domainEntity) {
     return AccountTokenEntityJpa.builder()
@@ -22,7 +21,7 @@ public class AccountTokenMapping implements IMappingDomainEntityAndJpaEntity<Acc
         .accessToken(domainEntity.getAccessToken())
         .refreshToken(domainEntity.getRefreshToken())
         .device(DeviceType.valueOf(domainEntity.getDevice().getValue()))
-        .account(this.accountMapping.convertFromDomainEntityToJpaEntity(domainEntity.getAccount()))
+        .account(AccountEntityJpa.builder().id(domainEntity.getAccountId()).build())
         .build();
   }
 
@@ -33,8 +32,7 @@ public class AccountTokenMapping implements IMappingDomainEntityAndJpaEntity<Acc
         .accessToken(jpaEntity.getAccessToken())
         .refreshToken(jpaEntity.getRefreshToken())
         .device(new Device(jpaEntity.getDevice().name()))
-        .account(this.accountMapping.convertFromJpaEntityToDomainEntity(jpaEntity.getAccount()))
+        .accountId(jpaEntity.getAccount().getId())
         .build();
   }
-
 }
