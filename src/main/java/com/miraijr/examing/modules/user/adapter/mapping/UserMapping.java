@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.miraijr.examing.core.adapter.mapping.IMappingDomainEntityAndJpaEntity;
 import com.miraijr.examing.modules.user.adapter.out.persistence.UserEntityJpa;
+import com.miraijr.examing.modules.user.adapter.out.persistence.UserEntityJpa.UserEntityJpaBuilder;
 import com.miraijr.examing.modules.user.domain.Email;
 import com.miraijr.examing.modules.user.domain.PhoneNumber;
 import com.miraijr.examing.modules.user.domain.User;
@@ -21,33 +22,42 @@ public class UserMapping implements IMappingDomainEntityAndJpaEntity<User, UserE
 
   @Override
   public UserEntityJpa convertFromDomainEntityToJpaEntity(User domainEntity) {
-    return UserEntityJpa.builder()
+    UserEntityJpaBuilder builder = UserEntityJpa.builder()
         .id(domainEntity.getId())
-        .fullName(domainEntity.getFullName())
-        .build();
+        .fullName(domainEntity.getFullName());
+
+    if (domainEntity.getPhoneNumber() != null) {
+      builder.phoneNumber(domainEntity.getPhoneNumber().getValue());
+    }
+
+    if (domainEntity.getEmail() != null) {
+      builder.email(domainEntity.getEmail().getValue());
+    }
+
+    return builder.build();
   }
 
   @Override
   public User convertFromJpaEntityToDomainEntity(UserEntityJpa jpaEntity) {
-    UserBuilder userBuilder = User.builder()
+    UserBuilder builder = User.builder()
         .id(jpaEntity.getId())
         .fullName(jpaEntity.getFullName());
 
     if (jpaEntity.getPhoneNumber() != null) {
-      userBuilder.phoneNumber(new PhoneNumber(jpaEntity.getPhoneNumber()));
+      builder.phoneNumber(new PhoneNumber(jpaEntity.getPhoneNumber()));
     }
 
     if (jpaEntity.getEmail() != null) {
-      userBuilder.email(new Email(jpaEntity.getEmail()));
+      builder.email(new Email(jpaEntity.getEmail()));
     }
 
     if (jpaEntity.getAddresses() != null) {
-      userBuilder.addresses(
+      builder.addresses(
           jpaEntity.getAddresses().stream()
               .map(addressMapping::convertFromJpaEntityToDomainEntity)
               .collect(Collectors.toList()));
     }
 
-    return userBuilder.build();
+    return builder.build();
   }
 }
