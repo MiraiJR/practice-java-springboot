@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 public class CreateUser implements CreateUserUseCase {
   private final CreateUserPort createUserPort;
   private final LoadUserPort loadUserPort;
-  private final SendEventToMessageQueuePort sendMessageToKafkaPort;
+  private final SendEventToMessageQueuePort sendEventToMessageQueuePort;
 
   @Override
   @Transactional("transactionManager")
@@ -39,10 +39,12 @@ public class CreateUser implements CreateUserUseCase {
           .id(createUserInputModel.getId())
           .fullName(createUserInputModel.getFullName())
           .build();
-      Long userId = this.createUserPort.createUser(user);
-      this.sendMessageToKafkaPort.completeCreateUser(new CompleteCreateUserEvent(userId, EventStatus.COMPLETED));
+      User newUser = this.createUserPort.createUser(user);
+      this.sendEventToMessageQueuePort
+          .completeCreateUser(new CompleteCreateUserEvent(newUser.getId(), EventStatus.COMPLETED));
+      this.sendEventToMessageQueuePort.cacheUser(newUser);
     } catch (Exception e) {
-      this.sendMessageToKafkaPort
+      this.sendEventToMessageQueuePort
           .reverseAccount(new ReverseAccountEvent(createUserInputModel.getId(), EventStatus.REVERSE_ACCOUNT));
     }
   }
