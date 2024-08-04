@@ -19,7 +19,11 @@ public class GetUser implements GetUserUseCase {
 
   @Override
   public FullInformationUserOutputModel loggedInUser(Long userId) {
-    Optional<User> matchedUser = this.loadUserPort.loadUser(userId);
+    Optional<User> matchedUser = this.loadUserPort.loadUserFromCache(userId);
+
+    if (matchedUser.isEmpty()) {
+      matchedUser = this.loadUserPort.loadUser(userId);
+    }
 
     if (matchedUser.isEmpty()) {
       throw new UserNotFoundException();

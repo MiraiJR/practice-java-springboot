@@ -1,4 +1,4 @@
-package com.miraijr.examing.modules.user.adapter.out.persistence;
+package com.miraijr.examing.modules.user.adapter.out.persistence.jpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,7 +1,6 @@
 package com.miraijr.examing.modules.user.domain;
 
 import com.miraijr.examing.modules.user.domain.exceptions.InvalidPhoneNumber;
-
 import lombok.Getter;
 
 @Getter
