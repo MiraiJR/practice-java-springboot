@@ -30,6 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final TokenHandlerPort tokenHandlerPort;
   private final LoadAccountTokenPort loadAccountTokenPort;
 
+  @SuppressWarnings("null")
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
@@ -40,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     String token = this.getToken(request);
     AccountToken accountToken = this.checkToken(token);
-    CustomAuthentication customAuthentication = new CustomAuthentication(accountToken.getAccount().getId(),
+    CustomAuthentication customAuthentication = new CustomAuthentication(accountToken.getAccountId(),
         accountToken.getId());
     SecurityContextHolder.getContext().setAuthentication(customAuthentication);
     filterChain.doFilter(request, response);

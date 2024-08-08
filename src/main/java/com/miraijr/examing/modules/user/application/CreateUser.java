@@ -11,6 +11,7 @@ import com.miraijr.examing.modules.user.application.port.in.input.CreateUserInpu
 import com.miraijr.examing.modules.user.application.port.out.CreateUserPort;
 import com.miraijr.examing.modules.user.application.port.out.LoadUserPort;
 import com.miraijr.examing.modules.user.application.port.out.SendEventToMessageQueuePort;
+import com.miraijr.examing.modules.user.application.port.out.model.CacheUserEvent;
 import com.miraijr.examing.modules.user.application.port.out.model.CompleteCreateUserEvent;
 import com.miraijr.examing.modules.user.application.port.out.model.ReverseAccountEvent;
 import com.miraijr.examing.modules.user.common.types.enums.EventStatus;
@@ -23,7 +24,7 @@ import lombok.AllArgsConstructor;
 public class CreateUser implements CreateUserUseCase {
   private final CreateUserPort createUserPort;
   private final LoadUserPort loadUserPort;
-  private final SendEventToMessageQueuePort sendMessageToKafkaPort;
+  private final SendEventToMessageQueuePort sendEventToMessageQueuePort;
 
   @Override
   @Transactional("transactionManager")
@@ -35,11 +36,16 @@ public class CreateUser implements CreateUserUseCase {
         throw new ExistedUserWithIdException();
       }
 
-      User user = new User(createUserInputModel.getId(), createUserInputModel.getFullName());
-      Long userId = this.createUserPort.createUser(user);
-      this.sendMessageToKafkaPort.completeCreateUser(new CompleteCreateUserEvent(userId, EventStatus.COMPLETED));
+      User user = User.builder()
+          .id(createUserInputModel.getId())
+          .fullName(createUserInputModel.getFullName())
+          .build();
+      User newUser = this.createUserPort.createUser(user);
+      this.sendEventToMessageQueuePort
+          .completeCreateUser(new CompleteCreateUserEvent(newUser.getId(), EventStatus.COMPLETED));
+      this.sendEventToMessageQueuePort.cacheUser(CacheUserEvent.covertFromDomainEntity(newUser));
     } catch (Exception e) {
-      this.sendMessageToKafkaPort
+      this.sendEventToMessageQueuePort
           .reverseAccount(new ReverseAccountEvent(createUserInputModel.getId(), EventStatus.REVERSE_ACCOUNT));
     }
   }

@@ -69,17 +69,17 @@ services:
       - zookeeper-03
     networks:
       - exam-outline-pj
-    volumes:
-      - ./script/wait-for-it.sh:/wait-for-it.sh
-    entrypoint:
-      [
-        "/wait-for-it.sh",
-        "zookeeper-01:2181",
-        "zookeeper-02:2182",
-        "zookeeper-03:2183",
-        "--",
-        "/etc/confluent/docker/run",
-      ]
+    # volumes:
+    #   - ./script/wait-for-it.sh:/wait-for-it.sh
+    # entrypoint:
+    #   [
+    #     "/wait-for-it.sh",
+    #     "zookeeper-01:2181",
+    #     "zookeeper-02:2182",
+    #     "zookeeper-03:2183",
+    #     "--",
+    #     "/etc/confluent/docker/run",
+    #   ]
 
   kafka-broker-02:
     image: confluentinc/cp-kafka:latest
@@ -104,17 +104,26 @@ services:
       - zookeeper-03
     networks:
       - exam-outline-pj
+    # volumes:
+    #   - ./script/wait-for-it.sh:/wait-for-it.sh
+    # entrypoint:
+    #   [
+    #     "/wait-for-it.sh",
+    #     "zookeeper-01:2181",
+    #     "zookeeper-02:2182",
+    #     "zookeeper-03:2183",
+    #     "--",
+    #     "/etc/confluent/docker/run",
+    #   ]
+  redis-cache:
+    image: docker.io/redis:latest
+    container_name: redis-cache 
+    ports: 
+      - "6379:6379"
     volumes:
-      - ./script/wait-for-it.sh:/wait-for-it.sh
-    entrypoint:
-      [
-        "/wait-for-it.sh",
-        "zookeeper-01:2181",
-        "zookeeper-02:2182",
-        "zookeeper-03:2183",
-        "--",
-        "/etc/confluent/docker/run",
-      ]
+      - ./redis-data:/data
+    networks:
+      - exam-outline-pj
 
 networks:
   exam-outline-pj:

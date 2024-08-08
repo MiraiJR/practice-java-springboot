@@ -6,6 +6,6 @@ import com.miraijr.examing.core.application.ApplicationException;
 
 public class ExistedUserWithIdException extends ApplicationException {
   public ExistedUserWithIdException() {
-    super("USER-ERROR-0001", "Existed user with id", HttpStatus.BAD_GATEWAY);
+    super("USER-ERROR-0001", "Existed user with id", HttpStatus.BAD_REQUEST);
   }
 }
