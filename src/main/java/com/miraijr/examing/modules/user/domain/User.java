@@ -17,6 +17,7 @@ public class User {
   private Email email;
   private List<Address> addresses;
   private PhoneNumber phoneNumber;
+  private Gender gender;
 
   public void addNewAddress(Address address) {
     this.addresses.add(address);

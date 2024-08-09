@@ -33,6 +33,9 @@ public class UserEntityJpa {
   @Column(name = "phone_number")
   private String phoneNumber;
 
+  @Column
+  private Integer gender;
+
   @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
   private List<AddressEntityJpa> addresses;
 }

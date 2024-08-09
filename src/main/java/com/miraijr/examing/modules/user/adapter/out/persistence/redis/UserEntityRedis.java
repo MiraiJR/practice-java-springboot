@@ -21,5 +21,6 @@ public class UserEntityRedis {
   private String fullName;
   private String phoneNumber;
   private String email;
+  private Integer gender;
   private List<AddressEntityRedis> addresses;
 }
