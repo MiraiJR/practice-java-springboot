@@ -9,13 +9,14 @@ import com.miraijr.examing.modules.user.adapter.out.persistence.redis.UserEntity
 import com.miraijr.examing.modules.user.adapter.out.persistence.redis.UserRepositoryRedis;
 import com.miraijr.examing.modules.user.application.port.out.CreateUserPort;
 import com.miraijr.examing.modules.user.application.port.out.LoadUserPort;
+import com.miraijr.examing.modules.user.application.port.out.UpdateUserPort;
 import com.miraijr.examing.modules.user.domain.User;
 
 import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor
-public class UserPersistanceAdapter implements CreateUserPort, LoadUserPort {
+public class UserPersistanceAdapter implements CreateUserPort, LoadUserPort, UpdateUserPort {
   private final UserRepository userRepository;
   private final UserMapping userMapping;
   private final UserRepositoryRedis userRepositoryRedis;
@@ -41,5 +42,12 @@ public class UserPersistanceAdapter implements CreateUserPort, LoadUserPort {
 
     return userRedis.isPresent() ? Optional.of(this.userMapping.convertFromRedisEntityToDomainEntity(userRedis.get()))
         : Optional.empty();
+  }
+
+  @Override
+  public User updateUser(User user) {
+    UserEntityJpa userEntity = this.userMapping.convertFromDomainEntityToJpaEntity(user);
+    UserEntityJpa savedUser = this.userRepository.save(userEntity);
+    return this.userMapping.convertFromJpaEntityToDomainEntity(savedUser);
   }
 }

@@ -17,10 +17,10 @@ public class Gender {
     }
 
     private void setValue(Integer value) {
-        if (!ACCEPTANCE_GENDER.contains(value)) {
+        if (!ACCEPTANCE_GENDER.contains(Integer.valueOf(value))) {
             throw new InvalidGender();
         }
 
-        this.value = value;
+        this.value = Integer.valueOf(value);
     }
 }
