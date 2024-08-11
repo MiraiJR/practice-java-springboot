@@ -13,7 +13,7 @@ public class PhoneNumber {
   }
 
   private void setValue(String value) {
-    if (value.isEmpty() || value.matches(this.PHONE_NUMBER_PATTERN)) {
+    if (value.isEmpty() || !value.matches(this.PHONE_NUMBER_PATTERN)) {
       throw new InvalidPhoneNumber();
     }
 

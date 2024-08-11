@@ -15,7 +15,7 @@ public class Email {
   }
 
   private void setValue(String value) {
-    if (value.isEmpty() || value.matches(this.EMAIL_PATTERN)) {
+    if (value.isEmpty() || !value.matches(this.EMAIL_PATTERN)) {
       throw new InvalidEmail();
     }
 

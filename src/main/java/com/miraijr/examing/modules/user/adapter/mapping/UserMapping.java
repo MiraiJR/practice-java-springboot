@@ -15,6 +15,7 @@ import com.miraijr.examing.modules.user.adapter.out.persistence.jpa.UserEntityJp
 import com.miraijr.examing.modules.user.adapter.out.persistence.redis.UserEntityRedis;
 import com.miraijr.examing.modules.user.adapter.out.persistence.redis.UserEntityRedis.UserEntityRedisBuilder;
 import com.miraijr.examing.modules.user.domain.Email;
+import com.miraijr.examing.modules.user.domain.Gender;
 import com.miraijr.examing.modules.user.domain.PhoneNumber;
 import com.miraijr.examing.modules.user.domain.User;
 
@@ -37,6 +38,10 @@ public class UserMapping implements IMappingDomainEntityAndJpaEntity<User, UserE
       builder.email(domainEntity.getEmail().getValue());
     }
 
+    if (domainEntity.getGender() != null) {
+      builder.gender(domainEntity.getGender().getValue());
+    }
+
     return builder.build();
   }
 
@@ -52,6 +57,10 @@ public class UserMapping implements IMappingDomainEntityAndJpaEntity<User, UserE
 
     if (jpaEntity.getEmail() != null) {
       builder.email(new Email(jpaEntity.getEmail()));
+    }
+
+    if (jpaEntity.getGender() != null) {
+      builder.gender(new Gender(jpaEntity.getGender()));
     }
 
     if (jpaEntity.getAddresses() != null) {
@@ -79,6 +88,10 @@ public class UserMapping implements IMappingDomainEntityAndJpaEntity<User, UserE
       builder.email(new Email(redisEntity.getEmail()));
     }
 
+    if (redisEntity.getGender() != null) {
+      builder.gender(new Gender(redisEntity.getGender()));
+    }
+
     if (redisEntity.getAddresses() != null) {
       builder.addresses(
           redisEntity.getAddresses().stream()
@@ -102,6 +115,10 @@ public class UserMapping implements IMappingDomainEntityAndJpaEntity<User, UserE
 
     if (domainEntity.getEmail() != null) {
       builder.email(domainEntity.getEmail().getValue());
+    }
+
+    if (domainEntity.getGender() != null) {
+      builder.gender(domainEntity.getGender().getValue());
     }
 
     if (domainEntity.getAddresses() != null) {
