@@ -3,10 +3,12 @@ package com.miraijr.examing.modules.user.domain;
 import com.miraijr.examing.modules.user.domain.exceptions.InvalidEmail;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class Email {
-  private final String EMAIL_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+  private static final String EMAIL_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
   private String value;
 
@@ -15,7 +17,7 @@ public class Email {
   }
 
   private void setValue(String value) {
-    if (value.isEmpty() || !value.matches(this.EMAIL_PATTERN)) {
+    if (value.isEmpty() || !value.matches(EMAIL_PATTERN)) {
       throw new InvalidEmail();
     }
 

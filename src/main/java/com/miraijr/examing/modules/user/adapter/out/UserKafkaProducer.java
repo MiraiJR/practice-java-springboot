@@ -3,9 +3,9 @@ package com.miraijr.examing.modules.user.adapter.out;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import com.miraijr.examing.modules.user.application.port.out.SendEventToMessageQueuePort;
-import com.miraijr.examing.modules.user.application.port.out.model.CacheUserEvent;
 import com.miraijr.examing.modules.user.application.port.out.model.CompleteCreateUserEvent;
 import com.miraijr.examing.modules.user.application.port.out.model.ReverseAccountEvent;
+import com.miraijr.examing.modules.user.domain.User;
 
 import lombok.AllArgsConstructor;
 
@@ -28,7 +28,7 @@ public class UserKafkaProducer implements SendEventToMessageQueuePort {
   }
 
   @Override
-  public void cacheUser(CacheUserEvent eventModel) {
-    this.kafkaTemplate.send(CACHE_USER_TOPIC, eventModel);
+  public void cacheUser(User user) {
+    this.kafkaTemplate.send(CACHE_USER_TOPIC, user);
   }
 }

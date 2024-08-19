@@ -11,7 +11,6 @@ import com.miraijr.examing.modules.user.application.port.in.input.CreateUserInpu
 import com.miraijr.examing.modules.user.application.port.out.CreateUserPort;
 import com.miraijr.examing.modules.user.application.port.out.LoadUserPort;
 import com.miraijr.examing.modules.user.application.port.out.SendEventToMessageQueuePort;
-import com.miraijr.examing.modules.user.application.port.out.model.CacheUserEvent;
 import com.miraijr.examing.modules.user.application.port.out.model.CompleteCreateUserEvent;
 import com.miraijr.examing.modules.user.application.port.out.model.ReverseAccountEvent;
 import com.miraijr.examing.modules.user.common.types.enums.EventStatus;
@@ -43,7 +42,7 @@ public class CreateUser implements CreateUserUseCase {
       User newUser = this.createUserPort.createUser(user);
       this.sendEventToMessageQueuePort
           .completeCreateUser(new CompleteCreateUserEvent(newUser.getId(), EventStatus.COMPLETED));
-      this.sendEventToMessageQueuePort.cacheUser(CacheUserEvent.covertFromDomainEntity(newUser));
+      this.sendEventToMessageQueuePort.cacheUser(newUser);
     } catch (Exception e) {
       this.sendEventToMessageQueuePort
           .reverseAccount(new ReverseAccountEvent(createUserInputModel.getId(), EventStatus.REVERSE_ACCOUNT));

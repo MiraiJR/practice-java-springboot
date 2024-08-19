@@ -12,7 +12,6 @@ import com.miraijr.examing.modules.user.application.port.in.output.UpdateUserOut
 import com.miraijr.examing.modules.user.application.port.out.LoadUserPort;
 import com.miraijr.examing.modules.user.application.port.out.SendEventToMessageQueuePort;
 import com.miraijr.examing.modules.user.application.port.out.UpdateUserPort;
-import com.miraijr.examing.modules.user.application.port.out.model.CacheUserEvent;
 import com.miraijr.examing.modules.user.domain.Email;
 import com.miraijr.examing.modules.user.domain.Gender;
 import com.miraijr.examing.modules.user.domain.PhoneNumber;
@@ -45,7 +44,7 @@ public class UpdateUser implements UpdateUserUseCase {
         .build();
     User updatedUser = this.updateUserPort.updateUser(newProfileUser);
 
-    this.sendEventToMessageQueuePort.cacheUser(CacheUserEvent.covertFromDomainEntity(updatedUser));
+    this.sendEventToMessageQueuePort.cacheUser(updatedUser);
 
     return UpdateUserOutputModel.convertFromDomain(updatedUser);
   }

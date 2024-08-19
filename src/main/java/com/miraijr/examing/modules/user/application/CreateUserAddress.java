@@ -11,7 +11,6 @@ import com.miraijr.examing.modules.user.application.port.in.output.UserAddressOu
 import com.miraijr.examing.modules.user.application.port.out.CreateUserAddressPort;
 import com.miraijr.examing.modules.user.application.port.out.LoadUserPort;
 import com.miraijr.examing.modules.user.application.port.out.SendEventToMessageQueuePort;
-import com.miraijr.examing.modules.user.application.port.out.model.CacheUserEvent;
 import com.miraijr.examing.modules.user.domain.Address;
 import com.miraijr.examing.modules.user.domain.AddressType;
 import com.miraijr.examing.modules.user.domain.User;
@@ -49,7 +48,7 @@ public class CreateUserAddress implements CreateUserAddressUseCase {
         .build();
     Address newAddress = this.createUserAddressPort.createUserAddress(address);
     matchedUser.get().addNewAddress(newAddress);
-    this.sendEventToMessageQueuePort.cacheUser(CacheUserEvent.covertFromDomainEntity(matchedUser.get()));
+    this.sendEventToMessageQueuePort.cacheUser(matchedUser.get());
     return UserAddressOutputModel.convertFromDomain(newAddress);
   }
 }
