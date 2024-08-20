@@ -6,10 +6,12 @@ import java.util.List;
 import com.miraijr.examing.modules.user.domain.exceptions.InvalidGender;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class Gender {
-    private final List<Integer> ACCEPTANCE_GENDER = Arrays.asList(0, 1);
+    private static final List<Integer> ACCEPTANCE_GENDER = Arrays.asList(0, 1);
     private Integer value;
 
     public Gender(Integer value) {
