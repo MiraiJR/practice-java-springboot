@@ -30,7 +30,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final TokenHandlerPort tokenHandlerPort;
   private final LoadAccountTokenPort loadAccountTokenPort;
 
-  @SuppressWarnings("null")
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
@@ -51,7 +50,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     final List<Pair<String, String>> bypassTokens = Arrays.asList(
         Pair.of("/accounts/register", "POST"),
         Pair.of("/accounts/login", "POST"),
-        Pair.of("/actuator/health", "GET"));
+        Pair.of("/actuator/health", "GET"),
+        Pair.of("/categories", "GET"));
 
     String requestPath = request.getServletPath();
     String requestMethod = request.getMethod();
