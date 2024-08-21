@@ -16,13 +16,11 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 @Aspect
 @Component
 public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
-  @SuppressWarnings("null")
   @Override
   public boolean supportsParameter(MethodParameter parameter) {
     return parameter.getParameterAnnotation(UserId.class) != null;
   }
 
-  @SuppressWarnings("null")
   @Override
   public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
       NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {

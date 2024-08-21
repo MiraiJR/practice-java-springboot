@@ -20,7 +20,6 @@ import lombok.AllArgsConstructor;
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
   private final ObjectMapper objectMapper;
 
-  @SuppressWarnings("null")
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
