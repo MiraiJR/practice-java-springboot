@@ -51,6 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Pair.of("/accounts/register", "POST"),
         Pair.of("/accounts/login", "POST"),
         Pair.of("/actuator/health", "GET"),
+        Pair.of("/products/recommend", "GET"),
         Pair.of("/categories", "GET"));
 
     String requestPath = request.getServletPath();
