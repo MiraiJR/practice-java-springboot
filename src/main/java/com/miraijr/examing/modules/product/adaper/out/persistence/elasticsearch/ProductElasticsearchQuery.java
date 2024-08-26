@@ -19,7 +19,7 @@ public class ProductElasticsearchQuery implements LoadRecommendProductNamePort {
     private static final List<String> SEARCH_FIELDS = Arrays.asList("name", "description", "categoryName");
 
     @Override
-    public List<String> loadRecommendProductName(String prompt) {
+    public List<String> loadRecommendProductName(String prompt) throws Exception {
         List<ProductEntityElasticsearch> recommendedProducts = new ArrayList<>();
         SearchResponse<ProductEntityElasticsearch> search;
         try {
@@ -32,10 +32,8 @@ public class ProductElasticsearchQuery implements LoadRecommendProductNamePort {
                                     .fuzziness("AUTO"))),
                     ProductEntityElasticsearch.class);
             search.hits().hits().forEach(hit -> recommendedProducts.add(hit.source()));
-        } catch (ElasticsearchException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (ElasticsearchException | IOException e) {
+            throw new Exception(e.getMessage(), e.getCause());
         }
 
         return recommendedProducts.stream().map((product) -> product.getName()).toList();

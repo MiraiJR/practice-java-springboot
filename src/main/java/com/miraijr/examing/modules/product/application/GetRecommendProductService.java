@@ -2,6 +2,7 @@ package com.miraijr.examing.modules.product.application;
 
 import java.util.List;
 import org.springframework.stereotype.Component;
+import com.miraijr.examing.modules.product.application.exceptions.CanNotGetRecommendedProductNameList;
 import com.miraijr.examing.modules.product.application.port.in.GetRecommendProductUseCase;
 import com.miraijr.examing.modules.product.application.port.in.input.GetRecommendProductInputModel;
 import com.miraijr.examing.modules.product.application.port.in.output.GetRecommendProductOutputModel;
@@ -15,13 +16,17 @@ public class GetRecommendProductService implements GetRecommendProductUseCase {
 
     @Override
     public GetRecommendProductOutputModel getRecommendProduct(GetRecommendProductInputModel inputModel) {
-        List<String> recommendProductNameList = this.loadRecommendProductNamePort
-                .loadRecommendProductName(inputModel.getPrompt());
-
-        return GetRecommendProductOutputModel
-                .builder()
-                .query(inputModel.getPrompt())
-                .result(recommendProductNameList)
-                .build();
+        List<String> recommendProductNameList;
+        try {
+            recommendProductNameList = this.loadRecommendProductNamePort
+                    .loadRecommendProductName(inputModel.getPrompt());
+            return GetRecommendProductOutputModel
+                    .builder()
+                    .query(inputModel.getPrompt())
+                    .result(recommendProductNameList)
+                    .build();
+        } catch (Exception e) {
+            throw new CanNotGetRecommendedProductNameList();
+        }
     }
 }
