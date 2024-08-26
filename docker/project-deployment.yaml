@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.9"
 
 services:
   zookeeper-01:
@@ -69,17 +69,17 @@ services:
       - zookeeper-03
     networks:
       - exam-outline-pj
-    # volumes:
-    #   - ./script/wait-for-it.sh:/wait-for-it.sh
-    # entrypoint:
-    #   [
-    #     "/wait-for-it.sh",
-    #     "zookeeper-01:2181",
-    #     "zookeeper-02:2182",
-    #     "zookeeper-03:2183",
-    #     "--",
-    #     "/etc/confluent/docker/run",
-    #   ]
+    volumes:
+      - ../script/wait-for-it.sh:/wait-for-it.sh
+    entrypoint:
+      [
+        "/wait-for-it.sh",
+        "zookeeper-01:2181",
+        "zookeeper-02:2182",
+        "zookeeper-03:2183",
+        "--",
+        "/etc/confluent/docker/run",
+      ]
 
   kafka-broker-02:
     image: confluentinc/cp-kafka:latest
@@ -104,26 +104,115 @@ services:
       - zookeeper-03
     networks:
       - exam-outline-pj
-    # volumes:
-    #   - ./script/wait-for-it.sh:/wait-for-it.sh
-    # entrypoint:
-    #   [
-    #     "/wait-for-it.sh",
-    #     "zookeeper-01:2181",
-    #     "zookeeper-02:2182",
-    #     "zookeeper-03:2183",
-    #     "--",
-    #     "/etc/confluent/docker/run",
-    #   ]
+    volumes:
+      - ../script/wait-for-it.sh:/wait-for-it.sh
+    entrypoint:
+      [
+        "/wait-for-it.sh",
+        "zookeeper-01:2181",
+        "zookeeper-02:2182",
+        "zookeeper-03:2183",
+        "--",
+        "/etc/confluent/docker/run",
+      ]
   redis-cache:
     image: docker.io/redis:latest
-    container_name: redis-cache 
-    ports: 
+    container_name: redis-cache
+    ports:
       - "6379:6379"
     volumes:
       - ./redis-data:/data
     networks:
       - exam-outline-pj
+
+  es01:
+    container_name: es01
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    volumes:
+      - esdata01:/usr/share/elasticsearch/data
+    ports:
+      - ${ES_PORT}:9200
+    environment:
+      - node.name=es01
+      - cluster.name=${CLUSTER_NAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - xpack.license.self_generated.type=${LICENSE}
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -u elastic:${ELASTIC_PASSWORD} http://es01:9200 | grep -q 'You Know, for Search'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    networks:
+      - exam-outline-pj
+
+  setup-elasticsearch:
+    container_name: setup-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    user: "0"
+    depends_on:
+      es01:
+        condition: service_healthy
+    command: >
+      bash -c '
+        if [ x${ELASTIC_PASSWORD} == x ]; then
+          echo "Set the ELASTIC_PASSWORD environment variable in the .env file";
+          exit 1;
+        elif [ x${KIBANA_PASSWORD} == x ]; then
+          echo "Set the KIBANA_PASSWORD environment variable in the .env file";
+          exit 1;
+        fi;
+        echo "Waiting for Elasticsearch availability";
+        until curl -s -u elastic:${ELASTIC_PASSWORD} http://es01:9200 | grep -q "You Know, for Search"; do sleep 30; done;
+        echo "Setting kibana_system password";
+        until curl -s -X POST -u "elastic:${ELASTIC_PASSWORD}" -H "Content-Type: application/json" http://es01:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        echo "All done!";
+      '
+    networks:
+      - exam-outline-pj
+
+  kibana:
+    container_name: kibana
+    depends_on:
+      - setup-elasticsearch
+    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+    volumes:
+      - kibanadata:/usr/share/kibana/data
+    ports:
+      - ${KIBANA_PORT}:5601
+    environment:
+      - SERVERNAME=kibana
+      - ELASTICSEARCH_HOSTS=http://es01:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -u kibana_system:${KIBANA_PASSWORD} -I http://kibana:5601 | grep -q 'HTTP/1.1 200 OK'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    networks:
+      - exam-outline-pj
+
+volumes:
+  esdata01:
+    driver: local
+  kibanadata:
+    driver: local
 
 networks:
   exam-outline-pj:
