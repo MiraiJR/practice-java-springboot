@@ -29,6 +29,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private static String AUTHORIZATION_KEY = "Authorization";
   private final TokenHandlerPort tokenHandlerPort;
   private final LoadAccountTokenPort loadAccountTokenPort;
+  private static final List<Pair<String, String>> BYPASS_TOKENS = Arrays.asList(
+      Pair.of("/accounts/register", "POST"),
+      Pair.of("/accounts/login", "POST"),
+      Pair.of("/actuator/health", "GET"),
+      Pair.of("/products/recommend", "GET"),
+      Pair.of("/categories", "GET"));
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -42,22 +48,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     AccountToken accountToken = this.checkToken(token);
     CustomAuthentication customAuthentication = new CustomAuthentication(accountToken.getAccountId(),
         accountToken.getId());
+    customAuthentication.setAuthenticated(true);
     SecurityContextHolder.getContext().setAuthentication(customAuthentication);
     filterChain.doFilter(request, response);
   }
 
   private boolean isBypassToken(HttpServletRequest request) {
-    final List<Pair<String, String>> bypassTokens = Arrays.asList(
-        Pair.of("/accounts/register", "POST"),
-        Pair.of("/accounts/login", "POST"),
-        Pair.of("/actuator/health", "GET"),
-        Pair.of("/products/recommend", "GET"),
-        Pair.of("/categories", "GET"));
-
     String requestPath = request.getServletPath();
     String requestMethod = request.getMethod();
 
-    return bypassTokens.contains(Pair.of(requestPath, requestMethod));
+    return BYPASS_TOKENS.contains(Pair.of(requestPath, requestMethod));
   }
 
   private String getToken(HttpServletRequest request) {

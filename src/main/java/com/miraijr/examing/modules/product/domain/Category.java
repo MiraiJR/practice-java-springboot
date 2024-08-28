@@ -19,6 +19,10 @@ public class Category {
   private String slug;
   private List<Category> childrens;
 
+  public Category(Long id) {
+    this.id = id;
+  }
+
   public void addChildren(Category category) {
     if (this.childrens == null) {
       this.childrens = new ArrayList<>();
