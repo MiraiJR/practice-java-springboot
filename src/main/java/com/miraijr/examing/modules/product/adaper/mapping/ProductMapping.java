@@ -9,6 +9,7 @@ import com.miraijr.examing.core.adapter.mapping.IMappingDomainEntityAndRedisEnti
 import com.miraijr.examing.modules.product.adaper.out.persistence.elasticsearch.ProductEntityElasticsearch;
 import com.miraijr.examing.modules.product.adaper.out.persistence.jpa.ProductEntityJpa;
 import com.miraijr.examing.modules.product.adaper.out.persistence.redis.ProductEntityRedis;
+import com.miraijr.examing.modules.product.domain.Category;
 import com.miraijr.examing.modules.product.domain.Price;
 import com.miraijr.examing.modules.product.domain.Product;
 
@@ -68,7 +69,7 @@ public class ProductMapping implements IMappingDomainEntityAndJpaEntity<Product,
         .price(domainEntity.getPrice().getValue())
         .stock(domainEntity.getStock())
         .slug(domainEntity.getSlug())
-        .category(this.categoryMapping.convertFromDomainEntityToRedisEntity(domainEntity.getCategory()));
+        .categoryId(domainEntity.getCategory().getId());
 
     return builder.build();
   }
@@ -82,7 +83,7 @@ public class ProductMapping implements IMappingDomainEntityAndJpaEntity<Product,
         .price(new Price(redisEntity.getPrice().floatValue()))
         .stock(redisEntity.getStock())
         .slug(redisEntity.getSlug())
-        .category(this.categoryMapping.convertFromRedisEntityToDomainEntity(redisEntity.getCategory()));
+        .category(new Category(redisEntity.getCategoryId()));
 
     return builder.build();
   }

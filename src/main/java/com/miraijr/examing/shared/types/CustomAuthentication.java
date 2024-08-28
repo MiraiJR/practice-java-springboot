@@ -1,6 +1,7 @@
 package com.miraijr.examing.shared.types;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,7 +24,7 @@ public class CustomAuthentication implements Authentication {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+    return Collections.emptyList();
   }
 
   @Override

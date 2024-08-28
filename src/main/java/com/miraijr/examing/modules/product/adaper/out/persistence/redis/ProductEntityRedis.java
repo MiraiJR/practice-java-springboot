@@ -21,5 +21,5 @@ public class ProductEntityRedis {
   private Long stock;
   private Float price;
   private String slug;
-  private CategoryEntityRedis category;
+  private Long categoryId;
 }

@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.miraijr.examing.core.infrastruction.config.ExceptionHandlerFilter;
 
@@ -25,9 +25,11 @@ public class SpringSecurity {
   SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
         .csrf(AbstractHttpConfigurer::disable)
-        .addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(exceptionHandlerFilter, BasicAuthenticationFilter.class)
+        .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
         .authorizeHttpRequests(authorize -> authorize
-            .anyRequest().permitAll());
+            .requestMatchers("/accounts/login").permitAll()
+            .anyRequest().authenticated());
 
     return httpSecurity.build();
   }

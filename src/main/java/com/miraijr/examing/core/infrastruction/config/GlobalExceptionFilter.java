@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import com.miraijr.examing.core.application.ApplicationException;
 import com.miraijr.examing.core.domain.DomainException;
 import com.miraijr.examing.shared.exceptions.ExceptionResponseModel;
@@ -23,6 +23,23 @@ public class GlobalExceptionFilter {
         .body(new ExceptionResponseModel(
             exception.getErrorCode(),
             exception.getMessage(),
+            exception.getCause() != null ? exception.getCause().getMessage() : exception.getMessage(),
+            new Date(),
+            exception.getStackTrace()));
+  }
+
+  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+  public ResponseEntity<ExceptionResponseModel> handleApplicationException(
+      MethodArgumentTypeMismatchException exception) {
+    String errorMessage = String.format("Invalid value '%s' for parameter '%s'. Expected type: %s",
+        exception.getValue(),
+        exception.getName(),
+        exception.getRequiredType().getSimpleName());
+
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        .body(new ExceptionResponseModel(
+            exception.getErrorCode(),
+            errorMessage,
             exception.getCause() != null ? exception.getCause().getMessage() : exception.getMessage(),
             new Date(),
             exception.getStackTrace()));

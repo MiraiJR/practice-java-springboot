@@ -39,7 +39,7 @@ public class JwtService implements TokenHandlerPort {
         .claims(extraClaims)
         .subject(id.toString())
         .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * (type == TokenType.REFRESH ? 7 : 1)))
+        .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * (type == TokenType.REFRESH ? 7 : 1)))
         .signWith(getSigningKey(type))
         .compact();
   }
