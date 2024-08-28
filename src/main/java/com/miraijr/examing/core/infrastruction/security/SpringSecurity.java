@@ -26,7 +26,6 @@ public class SpringSecurity {
     httpSecurity
         .csrf(AbstractHttpConfigurer::disable)
         .addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class)
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .authorizeHttpRequests(authorize -> authorize
             .anyRequest().permitAll());
 
