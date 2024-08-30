@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GetRecommendProductOutputModel {
     private String query;
-    private List<String> result;
+    private List<RecommendProductOutputModel> result;
 }

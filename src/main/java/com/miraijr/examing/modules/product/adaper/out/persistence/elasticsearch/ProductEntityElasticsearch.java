@@ -35,6 +35,9 @@ public class ProductEntityElasticsearch {
   @Field(type = FieldType.Float)
   private Float price;
 
+  @Field(type = FieldType.Long)
+  private Long categoryId;
+
   @Field(type = FieldType.Text)
-  private String categoryName;
+  private String slug;
 }

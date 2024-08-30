@@ -29,6 +29,9 @@ public class SpringSecurity {
         .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers("/accounts/login").permitAll()
+            .requestMatchers("/accounts/register").permitAll()
+            .requestMatchers("/products/recommend").permitAll()
+            .requestMatchers("/categories").permitAll()
             .anyRequest().authenticated());
 
     return httpSecurity.build();

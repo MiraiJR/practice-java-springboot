@@ -33,3 +33,4 @@ build/
 .vscode/
 
 ./redis-data
+docker/redis-data/dump.rdb

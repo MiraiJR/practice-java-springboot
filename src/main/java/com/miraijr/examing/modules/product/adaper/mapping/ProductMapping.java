@@ -1,9 +1,7 @@
 package com.miraijr.examing.modules.product.adaper.mapping;
 
 import java.math.BigDecimal;
-
 import org.springframework.stereotype.Component;
-
 import com.miraijr.examing.core.adapter.mapping.IMappingDomainEntityAndJpaEntity;
 import com.miraijr.examing.core.adapter.mapping.IMappingDomainEntityAndRedisEntity;
 import com.miraijr.examing.modules.product.adaper.out.persistence.elasticsearch.ProductEntityElasticsearch;
@@ -55,7 +53,20 @@ public class ProductMapping implements IMappingDomainEntityAndJpaEntity<Product,
         .name(domainEntity.getName())
         .description(domainEntity.getDescription())
         .price(domainEntity.getPrice().getValue().floatValue())
-        .categoryName(domainEntity.getCategory().getName());
+        .slug(domainEntity.getSlug())
+        .categoryId(domainEntity.getCategory().getId());
+
+    return builder.build();
+  }
+
+  public Product convertFromElasticsearchEntityToDomainEntity(ProductEntityElasticsearch entity) {
+    var builder = Product.builder();
+    builder.id(entity.getId())
+        .name(entity.getName())
+        .description(entity.getDescription())
+        .price(new Price(entity.getPrice().floatValue()))
+        .slug(entity.getSlug())
+        .category(new Category(entity.getCategoryId()));
 
     return builder.build();
   }
