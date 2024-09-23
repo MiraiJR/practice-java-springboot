@@ -4,18 +4,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import com.miraijr.examing.modules.user.domain.User;
 import lombok.Builder;
-import lombok.Getter;
 
-@Getter
 @Builder
-public class FullInformationUserOutputModel {
-  private Long id;
-  private String fullName;
-  private String email;
-  private String phoneNumber;
-  private Integer gender;
-  private List<UserAddressOutputModel> addresses;
-
+public record FullInformationUserOutputModel(
+    Long id,
+    String fullName,
+    String email,
+    String phoneNumber,
+    Integer gender,
+    List<UserAddressOutputModel> addresses) {
   public static FullInformationUserOutputModel convertFromDomain(User user) {
     return FullInformationUserOutputModel.builder()
         .id(user.getId())

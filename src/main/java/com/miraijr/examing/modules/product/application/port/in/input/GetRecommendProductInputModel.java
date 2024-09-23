@@ -15,7 +15,6 @@ public class GetRecommendProductInputModel {
     @NotNull
     @NotEmpty
     private String prompt;
-
     private Float minPrice;
     private Float maxPrice;
 }

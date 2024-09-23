@@ -2,23 +2,10 @@ package com.miraijr.examing.modules.product.application.port.in.output;
 
 import com.miraijr.examing.modules.product.domain.Category;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class CreateCategoryOutputModel {
-  private Long id;
-  private Long parentId;
-  private String name;
-  private String slug;
-
+public record CreateCategoryOutputModel(Long id, Long parentId, String name, String slug) {
   public static CreateCategoryOutputModel convertFromDomain(Category category) {
     var builder = CreateCategoryOutputModel.builder();
     builder.id(category.getId()).name(category.getName()).slug(category.getSlug());

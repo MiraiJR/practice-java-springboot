@@ -3,18 +3,15 @@ package com.miraijr.examing.modules.user.application.port.in.output;
 import com.miraijr.examing.modules.user.domain.Address;
 
 import lombok.Builder;
-import lombok.Getter;
 
-@Getter
 @Builder
-public class UserAddressOutputModel {
-  private Long id;
-  private String province;
-  private String district;
-  private String ward;
-  private String homeAddress;
-  private Integer type;
-
+public record UserAddressOutputModel(
+    Long id,
+    String province,
+    String district,
+    String ward,
+    String homeAddress,
+    Integer type) {
   public static UserAddressOutputModel convertFromDomain(Address address) {
     return UserAddressOutputModel.builder()
         .id(address.getId())

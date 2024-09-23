@@ -2,23 +2,15 @@ package com.miraijr.examing.modules.product.application.port.in.output;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.miraijr.examing.modules.product.domain.Category;
-
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class GetCategoryTreeUseCaseOutputModel {
-  private Long id;
-  private List<GetCategoryTreeUseCaseOutputModel> childrens;
-  private String name;
-  private String slug;
+public record GetCategoryTreeUseCaseOutputModel(
+    Long id,
+    List<GetCategoryTreeUseCaseOutputModel> childrens,
+    String name,
+    String slug) {
 
   public static GetCategoryTreeUseCaseOutputModel convertFromDomainEntity(Category category) {
     var builder = GetCategoryTreeUseCaseOutputModel.builder();
