@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.3</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<version>3.3.4</version>
+		<relativePath />
 	</parent>
 	<groupId>com.miraijr</groupId>
-	<artifactId>examing</artifactId>
+	<artifactId>command_side</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>examing</name>
+	<name>command_side</name>
 	<description>Demo project for Spring Boot</description>
 	<url />
 	<licenses>
@@ -148,19 +148,13 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<excludes>
+						<fork>true</fork>
+						<addResources>true</addResources>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<fork>true</fork>
-					<addResources>true</addResources>
 				</configuration>
 			</plugin>
 		</plugins>
