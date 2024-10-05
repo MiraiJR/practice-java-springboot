@@ -1,8 +1,8 @@
 package com.miraijr.command_side.modules.product.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +17,8 @@ public class Category {
   private Category parent;
   private String name;
   private String slug;
+  private Date createdAt;
+  private Date updatedAt;
   private List<Category> childrens;
 
   public Category(Long id) {

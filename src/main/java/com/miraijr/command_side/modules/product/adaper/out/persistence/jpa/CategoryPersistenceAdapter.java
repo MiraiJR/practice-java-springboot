@@ -1,6 +1,5 @@
 package com.miraijr.command_side.modules.product.adaper.out.persistence.jpa;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;

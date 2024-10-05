@@ -12,7 +12,7 @@ import com.miraijr.command_side.modules.product.application.port.in.input.Create
 import com.miraijr.command_side.modules.product.application.port.in.output.CreateProductOutputModel;
 import com.miraijr.command_side.modules.product.application.port.out.CreateProductPort;
 import com.miraijr.command_side.modules.product.application.port.out.LoadCategoryPort;
-import com.miraijr.command_side.modules.product.application.port.out.SendEventToMessageQueuePort;
+import com.miraijr.command_side.modules.product.application.port.out.SendProductEventToMessageQueuePort;
 import com.miraijr.command_side.modules.product.domain.Category;
 import com.miraijr.command_side.modules.product.domain.Price;
 import com.miraijr.command_side.modules.product.domain.Product;
@@ -25,7 +25,7 @@ public class CreateProductService implements CreateProductUseCase {
   private final CreateProductPort createProductPort;
   private final LoadCategoryPort loadCategoryPort;
   private final SlugGeneratorPort slugGeneratorPort;
-  private final SendEventToMessageQueuePort sendEventToMessageQueuePort;
+  private final SendProductEventToMessageQueuePort sendProductEventToMessageQueuePort;
 
   @Override
   @Transactional("transactionManager")
@@ -47,7 +47,7 @@ public class CreateProductService implements CreateProductUseCase {
 
     Product newProduct = this.createProductPort.createProduct(product);
 
-    this.sendEventToMessageQueuePort.sendProductToExternalService(newProduct);
+    this.sendProductEventToMessageQueuePort.sendProductToExternalService(newProduct);
 
     return CreateProductOutputModel.convertFromDomainEntity(newProduct);
   }

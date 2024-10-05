@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.miraijr.command_side.core.adapter.mapping.IMappingDomainEntityAndJpaEntity;
 import com.miraijr.command_side.core.adapter.mapping.IMappingDomainEntityAndRedisEntity;
+import com.miraijr.command_side.modules.product.adaper.out.persistence.elasticsearch.CategoryEntityElasticsearch;
 import com.miraijr.command_side.modules.product.adaper.out.persistence.jpa.CategoryEntityJpa;
 import com.miraijr.command_side.modules.product.adaper.out.persistence.redis.CategoryEntityRedis;
 import com.miraijr.command_side.modules.product.domain.Category;
@@ -15,9 +16,11 @@ public class CategoryMapping implements IMappingDomainEntityAndJpaEntity<Categor
   @Override
   public CategoryEntityJpa convertFromDomainEntityToJpaEntity(Category domainEntity) {
     var builder = CategoryEntityJpa.builder();
-    builder.name(domainEntity.getName());
-    builder.id(domainEntity.getId());
-    builder.slug(domainEntity.getSlug());
+    builder.name(domainEntity.getName())
+        .id(domainEntity.getId())
+        .slug(domainEntity.getSlug())
+        .createdAt(domainEntity.getCreatedAt())
+        .updatedAt(domainEntity.getUpdatedAt());
 
     if (domainEntity.getParent() != null) {
       builder.parent(this.convertFromDomainEntityToJpaEntity(domainEntity.getParent()));
@@ -29,9 +32,11 @@ public class CategoryMapping implements IMappingDomainEntityAndJpaEntity<Categor
   @Override
   public Category convertFromJpaEntityToDomainEntity(CategoryEntityJpa jpaEntity) {
     var builder = Category.builder();
-    builder.name(jpaEntity.getName());
-    builder.id(jpaEntity.getId());
-    builder.slug(jpaEntity.getSlug());
+    builder.id(jpaEntity.getId())
+        .name(jpaEntity.getName())
+        .slug(jpaEntity.getSlug())
+        .createdAt(jpaEntity.getCreatedAt())
+        .updatedAt(jpaEntity.getUpdatedAt());
 
     if (jpaEntity.getParent() != null) {
       builder.parent(this.convertFromJpaEntityToDomainEntity(jpaEntity.getParent()));
@@ -43,9 +48,11 @@ public class CategoryMapping implements IMappingDomainEntityAndJpaEntity<Categor
   @Override
   public CategoryEntityRedis convertFromDomainEntityToRedisEntity(Category domainEntity) {
     var builder = CategoryEntityRedis.builder();
-    builder.name(domainEntity.getName());
-    builder.id(domainEntity.getId());
-    builder.slug(domainEntity.getSlug());
+    builder.name(domainEntity.getName())
+        .id(domainEntity.getId())
+        .slug(domainEntity.getSlug())
+        .createdAt(domainEntity.getCreatedAt())
+        .updatedAt(domainEntity.getUpdatedAt());
 
     if (domainEntity.getParent() != null) {
       builder.parent(this.convertFromDomainEntityToRedisEntity(domainEntity.getParent()));
@@ -57,12 +64,30 @@ public class CategoryMapping implements IMappingDomainEntityAndJpaEntity<Categor
   @Override
   public Category convertFromRedisEntityToDomainEntity(CategoryEntityRedis redisEntity) {
     CategoryBuilder builder = Category.builder();
-    builder.name(redisEntity.getName());
-    builder.id(redisEntity.getId());
-    builder.slug(redisEntity.getSlug());
+    builder.name(redisEntity.getName())
+        .id(redisEntity.getId())
+        .slug(redisEntity.getSlug())
+        .createdAt(redisEntity.getCreatedAt())
+        .updatedAt(redisEntity.getUpdatedAt());
 
     if (redisEntity.getParent() != null) {
       builder.parent(this.convertFromRedisEntityToDomainEntity(redisEntity.getParent()));
+    }
+
+    return builder.build();
+  }
+
+  public CategoryEntityElasticsearch convertFromDomainEntityToElasticsearchEntity(Category domainEntity) {
+    var builder = CategoryEntityElasticsearch.builder();
+
+    builder.id(domainEntity.getId())
+        .name(domainEntity.getName())
+        .slug(domainEntity.getSlug())
+        .createdAt(domainEntity.getCreatedAt())
+        .updatedAt(domainEntity.getUpdatedAt());
+
+    if (domainEntity.getParent() != null) {
+      builder.parentId(domainEntity.getParent().getId());
     }
 
     return builder.build();

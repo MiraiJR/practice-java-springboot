@@ -11,9 +11,9 @@ import com.miraijr.command_side.modules.product.application.port.in.input.Create
 import com.miraijr.command_side.modules.product.application.port.in.output.CreateCategoryOutputModel;
 import com.miraijr.command_side.modules.product.application.port.out.CreateCategoryPort;
 import com.miraijr.command_side.modules.product.application.port.out.LoadCategoryPort;
+import com.miraijr.command_side.modules.product.application.port.out.SendCategoryEventToMessageQueuePort;
 import com.miraijr.command_side.modules.product.domain.Category;
 import com.miraijr.command_side.modules.product.domain.Category.CategoryBuilder;
-
 import lombok.AllArgsConstructor;
 
 @Component
@@ -22,6 +22,7 @@ public class CreateCategoryService implements CreateCategoryUseCase {
   private final LoadCategoryPort loadCategoryPort;
   private final CreateCategoryPort createCategoryPort;
   private final SlugGeneratorPort slugGeneratorPort;
+  private final SendCategoryEventToMessageQueuePort SendCategoryEventToMessageQueuePort;
 
   @Override
   @Transactional("transactionManager")
@@ -38,6 +39,8 @@ public class CreateCategoryService implements CreateCategoryUseCase {
     }
 
     Category newCategory = this.createCategoryPort.createCategory(builder.build());
+
+    this.SendCategoryEventToMessageQueuePort.sendCategoryToExternalService(newCategory);
 
     return CreateCategoryOutputModel.convertFromDomain(newCategory);
   }

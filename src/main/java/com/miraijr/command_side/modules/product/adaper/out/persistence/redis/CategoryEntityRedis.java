@@ -1,5 +1,7 @@
 package com.miraijr.command_side.modules.product.adaper.out.persistence.redis;
 
+import java.util.Date;
+
 import org.springframework.data.redis.core.RedisHash;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -18,4 +20,6 @@ public class CategoryEntityRedis {
   private CategoryEntityRedis parent;
   private String name;
   private String slug;
+  private Date createdAt;
+  private Date updatedAt;
 }
